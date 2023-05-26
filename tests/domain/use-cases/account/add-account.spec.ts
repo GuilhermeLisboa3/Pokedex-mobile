@@ -1,7 +1,7 @@
 import { type AddAccount, AddAccountUseCase } from '@/domain/use-cases/account'
 import { type HttpClient } from '@/domain/contracts/http'
 import { AccountParams, httpClientParams } from '@/tests/mocks'
-import { FieldInUseError } from '@/domain/errors'
+import { FieldInUseError, UnexpectedError } from '@/domain/errors'
 
 import { mock } from 'jest-mock-extended'
 
@@ -32,5 +32,13 @@ describe('AddAccountUseCase', () => {
     const promise = sut({ name, email, password })
 
     await expect(promise).rejects.toThrow(new FieldInUseError('email'))
+  })
+
+  it('should throw UnexpectedError if HttpClient return 500', async () => {
+    httpClient.request.mockResolvedValueOnce({ statusCode: 500 })
+
+    const promise = sut({ name, email, password })
+
+    await expect(promise).rejects.toThrow(new UnexpectedError())
   })
 })
