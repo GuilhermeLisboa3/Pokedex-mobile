@@ -1,0 +1,10 @@
+{
+  "expo": {
+    "name": "pokedex-react-native",
+    "slug": "pokedex-react-native",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
