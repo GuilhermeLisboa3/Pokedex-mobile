@@ -1,11 +1,16 @@
 {
   "compilerOptions": {
-    "lib": ["esnext"],
+    "lib": [
+      "esnext"
+    ],
     "outDir": "dist",
-    "rootDirs": ["src","tests"],
+    "rootDirs": [
+      "src",
+      "tests"
+    ],
     "target": "es2021",
     "module": "esnext",
-    "moduleResolution": "node", 
+    "moduleResolution": "node",
     "jsx": "react-native",
     "baseUrl": "src",
     "allowJs": true,
@@ -17,7 +22,14 @@
     "esModuleInterop": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "paths": { "@/*": ["*"], "@/tests/*": ["../tests/*"]
+    "paths": {
+      "@/*": [
+        "*"
+      ],
+      "@/tests/*": [
+        "../tests/*"
+      ]
     }
-  }
+  },
+  "extends": "expo/tsconfig.base"
 }
