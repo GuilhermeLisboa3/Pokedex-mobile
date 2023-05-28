@@ -10,12 +10,13 @@ type Props = TextInputProps & {
   iconNames?: keyof typeof Icon.glyphMap
   iconSize?: number
   iconColor?: string
+  testID: string
   isError: string | undefined
 }
 
 export const Input: React.FC<Props> = ({ isError, testID, iconColor, iconLeft, iconNames, iconViewPassword, iconSize, ...res }) => {
   return (
-  <Container isError={isError}>
+  <Container isError={isError} testID={`container-${testID}`}>
     { iconLeft ? <Text><Icon name={iconNames} size={iconSize} color={isError ? '#fd4f55' : '#198754'}/></Text> : '' }
     <TextInput
       {...res}
