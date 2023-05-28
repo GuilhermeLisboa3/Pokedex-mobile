@@ -82,4 +82,13 @@ describe('SignUp', () => {
 
     expect(addAccount).toHaveBeenCalledWith({ name, email, password })
   })
+
+  it('should call addAccount only once', async () => {
+    makeSut()
+
+    simulateSubmit()
+    fireEvent.press(screen.getByRole('button', { name: 'Registrar' }))
+
+    expect(addAccount).toHaveBeenCalledTimes(1)
+  })
 })
