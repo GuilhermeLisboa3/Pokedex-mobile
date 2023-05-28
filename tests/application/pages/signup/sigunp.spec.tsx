@@ -3,13 +3,14 @@ import { AccountParams, populateField } from '@/tests/mocks'
 import { type Validator } from '@/application/validation'
 
 import React from 'react'
-import { render, screen } from '@testing-library/react-native'
+import { fireEvent, render, screen } from '@testing-library/react-native'
 import { type MockProxy, mock } from 'jest-mock-extended'
 
 describe('SignUp', () => {
   const { name, email, password, passwordConfirmation } = AccountParams
 
   const validator: MockProxy<Validator> = mock()
+  const addAccount = jest.fn()
 
   const populateFields = (): void => {
     populateField('input-name', name)
@@ -18,7 +19,12 @@ describe('SignUp', () => {
     populateField('input-passwordConfirmation', passwordConfirmation)
   }
 
-  const makeSut = (): void => { render(<SignUp validator={validator}/>) }
+  const simulateSubmit = (): void => {
+    populateFields()
+    fireEvent.press(screen.getByRole('button', { name: 'Registrar' }))
+  }
+
+  const makeSut = (): void => { render(<SignUp validator={validator} addAccount={addAccount}/>) }
 
   beforeAll(() => {
     validator.validate.mockReturnValue(undefined)
@@ -67,5 +73,13 @@ describe('SignUp', () => {
     populateFields()
 
     expect(screen.getByRole('button', { name: 'Registrar' })).toBeEnabled()
+  })
+
+  it('should call addAccount with correct input', async () => {
+    makeSut()
+
+    simulateSubmit()
+
+    expect(addAccount).toHaveBeenCalledWith({ name, email, password })
   })
 })
