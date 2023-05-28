@@ -1,5 +1,6 @@
 module.exports = {
   preset: 'react-native',
+  setupFilesAfterEnv: ['<rootDir>/src/main/config/jest-setup.ts'],
   collectCoverageFrom: ['<rootDir>/src/**/*.{ts,tsx}'],
   coverageDirectory: 'coverage',
   coverageProvider: 'babel',
