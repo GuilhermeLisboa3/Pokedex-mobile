@@ -12,17 +12,21 @@ type Props = TextInputProps & {
   iconColor?: string
   testID: string
   isError: string | undefined
+  setChange: React.Dispatch<React.SetStateAction<string>>
 }
 
-export const Input: React.FC<Props> = ({ isError, testID, iconColor, iconLeft, iconNames, iconViewPassword, iconSize, ...res }) => {
+export const Input: React.FC<Props> = ({ isError, setChange, testID, iconColor, iconLeft, iconNames, iconViewPassword, iconSize, ...res }) => {
   return (
   <Container isError={isError} testID={`container-${testID}`}>
     { iconLeft ? <Text><Icon name={iconNames} size={iconSize} color={isError ? '#fd4f55' : '#198754'}/></Text> : '' }
     <TextInput
       {...res}
+      testID={`input-${testID}`}
       selectionColor='black'
       autoCorrect={false}
-      autoCapitalize="none"/>
+      autoCapitalize="none"
+      onChangeText={e => { setChange(e) }}
+      />
     { iconViewPassword
       ? <Text>
           <Icon name='eye-off' size={iconSize} color={'black'}/>
