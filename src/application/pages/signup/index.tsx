@@ -13,6 +13,7 @@ type Props = {
 }
 
 export const SignUp: React.FC<Props> = ({ validator, addAccount }) => {
+  const [lodding, setLodding] = useState(false)
   const [name, setName] = useState('')
   const [nameError, setNameError] = useState<string | undefined>('')
   const [email, setEmail] = useState('')
@@ -28,7 +29,13 @@ export const SignUp: React.FC<Props> = ({ validator, addAccount }) => {
   useEffect(() => { setPasswordConfirmationError(validator.validate('passwordConfirmation', { password, passwordConfirmation })) }, [password, passwordConfirmation])
 
   const handleSubmit = async (): Promise<void> => {
-    await addAccount({ name, email, password })
+    if (lodding || nameError || emailError || passwordError || passwordConfirmationError) return
+    setLodding(true)
+    try {
+      await addAccount({ name, email, password })
+    } catch (error) {
+      setLodding(false)
+    }
   }
 
   return (
