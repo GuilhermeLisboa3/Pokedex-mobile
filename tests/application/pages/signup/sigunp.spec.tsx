@@ -52,4 +52,12 @@ describe('SignUp', () => {
 
     expect(screen.getByTestId('container-name')).toHaveStyle({ borderColor: '#fd4f55' })
   })
+
+  it('should success input if Validator return undefined', () => {
+    makeSut()
+
+    populateFields()
+
+    expect(screen.getByTestId('container-name')).toHaveStyle({ borderColor: '#198754' })
+  })
 })
