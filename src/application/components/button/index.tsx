@@ -11,7 +11,7 @@ type Props = {
 
 export const Button: React.FC<Props> = ({ disabled, height, width, text, ...props }) => {
   return (
-    <Container {...props} width={width} height={height} disabled={disabled}>
+    <Container {...props} width={width} height={height} accessibilityRole='button' disabled={disabled}>
       <TextButton disabled={disabled}>{text}</TextButton>
     </Container>
   )

@@ -41,7 +41,7 @@ export const SignUp: React.FC<Props> = ({ validator }) => {
               <Input setChange={setPassword} testID='password' isError={passwordError} iconLeft iconNames={'lock'} iconSize={20} placeholder='Digite sua senha' iconViewPassword secureTextEntry/>
               <Input setChange={setPasswordConfirmation} testID='passwordConfirmation' isError={passwordConfirmationError} iconLeft iconNames={'lock'} iconSize={20} placeholder='Confirme sua senha' iconViewPassword secureTextEntry/>
             </ContainerInputs>
-            <Button width={150} height={40} text='Registrar' disabled/>
+            <Button width={150} height={40} text='Registrar' disabled={!!nameError || !!emailError || !!passwordError || !!passwordConfirmationError}/>
           <TextLink>Você tem conta? <NavigationLink>Entrar</NavigationLink></TextLink>
         </Container>
       </ScrollView>
