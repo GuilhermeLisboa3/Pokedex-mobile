@@ -1,4 +1,5 @@
-import { CompareValidation, EmailValidation, LengthValidation, RequiredValidation, ValidationBuilder } from '@/application/validation'
+import { CompareValidation, EmailValidation, LengthValidation, RequiredValidation } from '@/application/validation'
+import { ValidationBuilder } from '@/application/validation/builder'
 
 import faker from 'faker'
 

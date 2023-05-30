@@ -3,6 +3,11 @@ module.exports = function (api) {
   return {
     presets: ['babel-preset-expo', '@babel/preset-typescript'],
     plugins: [
+      ['module:react-native-dotenv', {
+        envName: 'APP_ENV',
+        moduleName: '@env',
+        path: '.env'
+      }],
       ['module-resolver', {
         root: ['./src'],
         extensions: ['.js', '.jsx', '.ts', '.tsx'],

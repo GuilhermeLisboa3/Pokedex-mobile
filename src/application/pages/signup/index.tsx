@@ -6,6 +6,7 @@ import logo from '@/application/assets/pokedexLogo.png'
 
 import { KeyboardAvoidingView, SafeAreaView, Platform, ScrollView } from 'react-native'
 import React, { useEffect, useState } from 'react'
+import Toast from 'react-native-toast-message'
 
 type Props = {
   validator: Validator
@@ -34,7 +35,11 @@ export const SignUp: React.FC<Props> = ({ validator, addAccount }) => {
     setLodding(true)
     try {
       await addAccount({ name, email, password })
-    } catch (error) {
+    } catch (error: any) {
+      Toast.show({
+        type: 'error',
+        text1: error.message
+      })
       setLodding(false)
     }
   }
@@ -61,6 +66,7 @@ export const SignUp: React.FC<Props> = ({ validator, addAccount }) => {
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
+    <Toast/>
   </Container>
   )
 }
