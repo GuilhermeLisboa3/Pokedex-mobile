@@ -1,7 +1,8 @@
 import theme from '@/application/styles/theme'
-import { SignUp } from '@/application/pages/signup'
+import { Router } from '@/main/router'
 
-import { ActivityIndicator, StatusBar, View } from 'react-native'
+import { ActivityIndicator, StatusBar } from 'react-native'
+import { NavigationContainer } from '@react-navigation/native'
 import { Roboto_400Regular, Roboto_500Medium, Roboto_700Bold, Roboto_900Black } from '@expo-google-fonts/roboto'
 import { useFonts } from 'expo-font'
 import { ThemeProvider } from 'styled-components'
@@ -21,12 +22,12 @@ export const App: React.FC = () => {
 
   return (
     <>
-    <ThemeProvider theme={theme}>
-      <View style={{ flex: 1, backgroundColor: theme.COLORS.PRIMARY }}>
-        <StatusBar translucent={false} backgroundColor={theme.COLORS.PRIMARY} />
-        <SignUp/>
-      </View>
-    </ThemeProvider>
+    <NavigationContainer >
+      <StatusBar translucent={false} backgroundColor={'#F7F8FA'} />
+      <ThemeProvider theme={theme}>
+        <Router/>
+      </ThemeProvider>
+    </NavigationContainer>
     </>
   )
 }
