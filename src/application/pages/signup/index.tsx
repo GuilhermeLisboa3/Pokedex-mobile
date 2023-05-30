@@ -14,6 +14,7 @@ type Props = {
 
 export const SignUp: React.FC<Props> = ({ validator, addAccount }) => {
   const [lodding, setLodding] = useState(false)
+  const [security, setSecurity] = useState(true)
   const [name, setName] = useState('')
   const [nameError, setNameError] = useState<string | undefined>('')
   const [email, setEmail] = useState('')
@@ -51,8 +52,8 @@ export const SignUp: React.FC<Props> = ({ validator, addAccount }) => {
             <ContainerInputs>
               <Input setChange={setName} testID='name' isError={nameError} iconLeft iconNames={'user'} iconSize={20} placeholder='Digite seu nome'/>
               <Input setChange={setEmail} testID='email' isError={emailError} iconLeft iconNames={'mail'} iconSize={20} placeholder='Digite seu email'/>
-              <Input setChange={setPassword} testID='password' isError={passwordError} iconLeft iconNames={'lock'} iconSize={20} placeholder='Digite sua senha' iconViewPassword secureTextEntry/>
-              <Input setChange={setPasswordConfirmation} testID='passwordConfirmation' isError={passwordConfirmationError} iconLeft iconNames={'lock'} iconSize={20} placeholder='Confirme sua senha' iconViewPassword secureTextEntry/>
+              <Input security={ security} setSecurity={setSecurity} setChange={setPassword} testID='password' isError={passwordError} iconLeft iconNames={'lock'} iconSize={20} placeholder='Digite sua senha' iconViewPassword secureTextEntry={security}/>
+              <Input security={ security} setSecurity={setSecurity} setChange={setPasswordConfirmation} testID='passwordConfirmation' isError={passwordConfirmationError} iconLeft iconNames={'lock'} iconSize={20} placeholder='Confirme sua senha' iconViewPassword secureTextEntry={security}/>
             </ContainerInputs>
             <Button onSubmit={handleSubmit} width={150} height={40} text='Registrar' disabled={!!nameError || !!emailError || !!passwordError || !!passwordConfirmationError}/>
           <TextLink>Você tem conta? <NavigationLink>Entrar</NavigationLink></TextLink>
