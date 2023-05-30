@@ -22,6 +22,7 @@
     "esModuleInterop": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "typeRoots": [ "./src/main/types"],
     "paths": {
       "@/*": [
         "*"
