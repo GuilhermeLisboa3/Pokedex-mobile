@@ -91,4 +91,13 @@ describe('SignUp', () => {
 
     expect(addAccount).toHaveBeenCalledTimes(1)
   })
+
+  it('should not call AddAccount if form is invalid', async () => {
+    makeSut()
+    validator.validate.mockReturnValueOnce('error')
+
+    simulateSubmit()
+
+    expect(addAccount).not.toHaveBeenCalledTimes(1)
+  })
 })
