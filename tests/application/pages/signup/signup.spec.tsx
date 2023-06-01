@@ -3,8 +3,9 @@ import { AccountParams, populateField } from '@/tests/mocks'
 import { type Validator } from '@/application/validation'
 
 import React from 'react'
-import { fireEvent, render, screen } from '@testing-library/react-native'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react-native'
 import { type MockProxy, mock } from 'jest-mock-extended'
+import { FieldInUseError } from '@/domain/errors'
 
 describe('SignUp', () => {
   const { name, email, password, passwordConfirmation } = AccountParams
@@ -99,5 +100,16 @@ describe('SignUp', () => {
     simulateSubmit()
 
     expect(addAccount).not.toHaveBeenCalledTimes(1)
+  })
+
+  it('should show toast if AddAccount return error', async () => {
+    makeSut()
+    const error = new FieldInUseError('email')
+    addAccount.mockRejectedValueOnce(error)
+
+    simulateSubmit()
+    await waitFor(() => screen.getByTestId('toast'))
+
+    expect(screen.getByTestId('toast')).toBeTruthy()
   })
 })
