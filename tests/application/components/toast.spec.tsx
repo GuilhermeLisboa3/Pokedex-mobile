@@ -15,4 +15,10 @@ describe('Toats', () => {
     })
     expect(setIsOpen).toHaveBeenCalledWith(false)
   })
+
+  it('should have the background of success', () => {
+    render(<Toast color='success' message='any_message' setIsOpen={jest.fn()} />)
+
+    expect(screen.getByTestId('toast')).toHaveStyle({ backgroundColor: '#198754' })
+  })
 })
