@@ -1,5 +1,5 @@
 export interface SetStorage {
-  set: (input: SetStorage.Input) => void
+  set: (input: SetStorage.Input) => Promise<void>
 }
 
 export namespace SetStorage {
