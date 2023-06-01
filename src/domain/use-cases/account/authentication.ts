@@ -1,6 +1,6 @@
 import { type HttpClient } from '@/domain/contracts/http'
 import { type Account } from '@/domain/models'
-import { InvalidCredentialsError } from '@/domain/errors'
+import { InvalidCredentialsError, UnexpectedError } from '@/domain/errors'
 
 type Setup = (url: string, httpClient: HttpClient<Account>) => Authentication
 type Input = { email: string, password: string }
@@ -12,5 +12,6 @@ export const AuthenticationUseCase: Setup = (url, httpClient) => async ({ email,
   switch (statusCode) {
     case 200: return undefined
     case 401: throw new InvalidCredentialsError()
+    default: throw new UnexpectedError()
   }
 }
