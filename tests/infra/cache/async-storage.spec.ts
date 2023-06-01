@@ -21,5 +21,12 @@ describe('AsyncStorageAdapter', () => {
 
       expect(AsyncStorageMock.setItem).toHaveBeenCalledWith(key, JSON.stringify(value))
     })
+
+    it('should call AsyncStorage.removeItem if value is null', async () => {
+      const key = faker.database.column()
+      await sut.set({ key, value: undefined as any })
+
+      expect(AsyncStorageMock.removeItem).toHaveBeenCalledWith(key)
+    })
   })
 })
