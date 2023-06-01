@@ -14,6 +14,7 @@ export const Toast: React.FC<Props> = ({ message, color, setIsOpen }) => {
   setTimeout(() => { setIsOpen(false) }, 1000 * 2)
   return (
     <Animated.View
+    testID='toast'
     entering={FadeInUp}
     exiting={FadeOutUp}
     style={{
