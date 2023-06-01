@@ -6,8 +6,6 @@ import React from 'react'
 import { fireEvent, render, screen } from '@testing-library/react-native'
 import { type MockProxy, mock } from 'jest-mock-extended'
 
-jest.mock('react-native-toast-message', () => 'Toast')
-
 describe('SignUp', () => {
   const { name, email, password, passwordConfirmation } = AccountParams
 

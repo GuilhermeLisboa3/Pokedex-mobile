@@ -1,5 +1,6 @@
 module.exports = {
   preset: 'react-native',
+  setupFiles: ['./node_modules/react-native-gesture-handler/jestSetup.js'],
   setupFilesAfterEnv: ['<rootDir>/src/main/config/jest-setup.ts'],
   collectCoverageFrom: [
     '<rootDir>/src/**/*.{ts,tsx}',
