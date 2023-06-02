@@ -7,6 +7,14 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react-nativ
 import { type MockProxy, mock } from 'jest-mock-extended'
 import { FieldInUseError } from '@/domain/errors'
 
+jest.mock('@react-navigation/native', () => {
+  return {
+    useNavigation: () => ({
+      navigate: jest.fn()
+    })
+  }
+})
+
 describe('SignUp', () => {
   const { name, email, password, passwordConfirmation } = AccountParams
 

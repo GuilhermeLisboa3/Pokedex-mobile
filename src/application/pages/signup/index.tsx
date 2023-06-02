@@ -6,6 +6,8 @@ import { type AddAccount } from '@/domain/use-cases/account'
 import logo from '@/application/assets/pokedexLogo.png'
 
 import React, { useEffect, useState } from 'react'
+import { useNavigation, type ParamListBase } from '@react-navigation/native'
+import { type StackNavigationProp } from '@react-navigation/stack'
 
 type Props = {
   validator: Validator
@@ -13,6 +15,7 @@ type Props = {
 }
 
 export const SignUp: React.FC<Props> = ({ validator, addAccount }) => {
+  const { navigate } = useNavigation<StackNavigationProp <ParamListBase>>()
   const [toastMessage, setToastMessage] = useState('')
   const [toastIsOpen, setToastIsOpen] = useState(false)
   const [lodding, setLodding] = useState(false)
@@ -36,6 +39,7 @@ export const SignUp: React.FC<Props> = ({ validator, addAccount }) => {
     setLodding(true)
     try {
       await addAccount({ name, email, password })
+      navigate('Login')
     } catch (error: any) {
       setToastMessage(error.message)
       setToastIsOpen(true)
