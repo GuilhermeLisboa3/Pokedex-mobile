@@ -9,4 +9,8 @@ export type ListPokemons = (input: Input) => Promise<void>
 export const ListPokemonsUseCase: Setup = (url, httpClient) => async ({ page, perPage }) => {
   const listNamePokemons: HttpResponse<ListPokemon> = await httpClient.request({ url: `${url}/pokemon?limit=${perPage}&offset=${page}`, method: 'get' })
   if (listNamePokemons.statusCode !== 200) throw new UnexpectedError()
+  listNamePokemons.data?.results.map(async (pokemon) => {
+    const dataPokemon = await httpClient.request({ url: `${pokemon.url}`, method: 'get' })
+    return dataPokemon.data
+  })
 }
