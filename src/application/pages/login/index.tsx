@@ -10,6 +10,7 @@ import React, { useState, useEffect } from 'react'
 type Props = { validator: Validator, authentication: Authentication }
 
 export const Login: React.FC<Props> = ({ validator, authentication }) => {
+  const [lodding, setLodding] = useState(false)
   const [email, setEmail] = useState('')
   const [emailError, setEmailError] = useState<string | undefined>('')
   const [password, setPassword] = useState('')
@@ -19,6 +20,8 @@ export const Login: React.FC<Props> = ({ validator, authentication }) => {
   useEffect(() => { setPasswordError(validator.validate('password', { password })) }, [password])
 
   const handleSubmit = async (): Promise<void> => {
+    if (lodding || emailError || passwordError) return
+    setLodding(true)
     await authentication({ email, password })
   }
 
