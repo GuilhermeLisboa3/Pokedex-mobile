@@ -1,13 +1,19 @@
 import { Title, Image, ContainerInputs, TextLink, NavigationLink } from './styles'
 import { Input, Button } from '@/application/components'
 import { ContainerForm } from '@/application/layouts'
+import { type Validator } from '@/application/validation'
 import logo from '@/application/assets/pokedexLogo.png'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
-export const Login: React.FC = () => {
-  const [, setEmail] = useState('')
-  const [, setPassword] = useState('')
+type Props = { validator: Validator }
+
+export const Login: React.FC<Props> = ({ validator }) => {
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+
+  useEffect(() => { validator.validate('email', { email }) }, [email])
+  useEffect(() => { validator.validate('password', { password }) }, [password])
 
   return (
     <>
