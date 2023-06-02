@@ -6,6 +6,7 @@ import React from 'react'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react-native'
 import { type MockProxy, mock } from 'jest-mock-extended'
 import { FieldInUseError } from '@/domain/errors'
+import Navigation from '@react-navigation/native'
 
 jest.mock('@react-navigation/native', () => {
   return {
@@ -17,6 +18,8 @@ jest.mock('@react-navigation/native', () => {
 
 describe('SignUp', () => {
   const { name, email, password, passwordConfirmation } = AccountParams
+  const useNavigation = jest.spyOn(Navigation, 'useNavigation')
+  const navigation = { navigate: jest.fn() }
 
   const validator: MockProxy<Validator> = mock()
   const addAccount = jest.fn()
@@ -36,6 +39,7 @@ describe('SignUp', () => {
   const makeSut = (): void => { render(<SignUp validator={validator} addAccount={addAccount}/>) }
 
   beforeAll(() => {
+    useNavigation.mockReturnValue(navigation)
     validator.validate.mockReturnValue(undefined)
   })
 
@@ -119,5 +123,11 @@ describe('SignUp', () => {
     await waitFor(() => screen.getByTestId('toast'))
 
     expect(screen.getByTestId('toast')).toBeTruthy()
+  })
+
+  it('should redirect to the Login screen if click on the link', async () => {
+    makeSut()
+    fireEvent.press(screen.getByText('Entrar'))
+    expect(navigation.navigate).toHaveBeenCalledWith('Login')
   })
 })

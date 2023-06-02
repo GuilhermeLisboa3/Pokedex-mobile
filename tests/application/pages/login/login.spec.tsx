@@ -7,7 +7,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react-nativ
 import { type MockProxy, mock } from 'jest-mock-extended'
 import { InvalidCredentialsError } from '@/domain/errors'
 import { AccountContext } from '@/application/contexts'
-import Navigate from '@react-navigation/native'
+import Navigation from '@react-navigation/native'
 
 jest.mock('@react-navigation/native', () => {
   return {
@@ -19,8 +19,8 @@ jest.mock('@react-navigation/native', () => {
 
 describe('Login', () => {
   const { email, password, name, token } = AccountParams
-  const useRouter = jest.spyOn(Navigate, 'useNavigation')
-  const router = { navigate: jest.fn() }
+  const useNavigation = jest.spyOn(Navigation, 'useNavigation')
+  const navigation = { navigate: jest.fn() }
   const validator: MockProxy<Validator> = mock()
   const setCurrentAccountMock = jest.fn()
   const authentication = jest.fn()
@@ -36,7 +36,7 @@ describe('Login', () => {
   }
 
   beforeAll(() => {
-    useRouter.mockReturnValue(router)
+    useNavigation.mockReturnValue(navigation)
     validator.validate.mockReturnValue(undefined)
     authentication.mockResolvedValue({ name, email, token })
   })
@@ -139,6 +139,6 @@ describe('Login', () => {
   it('should redirect to the SignUp screen if click on the link', async () => {
     makeSut()
     fireEvent.press(screen.getByText('Registrar'))
-    expect(router.navigate).toHaveBeenCalledWith('SignUp')
+    expect(navigation.navigate).toHaveBeenCalledWith('SignUp')
   })
 })
