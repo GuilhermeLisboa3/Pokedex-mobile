@@ -81,4 +81,13 @@ describe('SignUp', () => {
 
     expect(authentication).toHaveBeenCalledTimes(1)
   })
+
+  it('should not call Authentication if form is invalid', async () => {
+    makeSut()
+    validator.validate.mockReturnValueOnce('error')
+
+    populateFields()
+
+    expect(authentication).not.toHaveBeenCalledTimes(1)
+  })
 })
