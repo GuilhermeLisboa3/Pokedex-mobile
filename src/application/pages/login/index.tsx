@@ -15,6 +15,7 @@ type Props = { validator: Validator, authentication: Authentication }
 export const Login: React.FC<Props> = ({ validator, authentication }) => {
   const { navigate } = useNavigation<StackNavigationProp <ParamListBase>>()
   const { setCurrentAccount } = useContext(AccountContext)
+  const [security, setSecurity] = useState(true)
   const [toastMessage, setToastMessage] = useState('')
   const [toastIsOpen, setToastIsOpen] = useState(false)
   const [lodding, setLodding] = useState(false)
@@ -32,7 +33,7 @@ export const Login: React.FC<Props> = ({ validator, authentication }) => {
     try {
       const account = await authentication({ email, password })
       setCurrentAccount(account)
-      navigate('SignUp')
+      navigate('Home')
     } catch (error: any) {
       setToastMessage(error.message)
       setToastIsOpen(true)
@@ -48,7 +49,7 @@ export const Login: React.FC<Props> = ({ validator, authentication }) => {
           <Image source={logo} resizeMode='stretch'/>
           <ContainerInputs>
             <Input setChange={setEmail} testID='email' isError={emailError} iconLeft iconNames={'mail'} iconSize={20} placeholder='Digite seu email'/>
-            <Input setChange={setPassword} testID='password' isError={passwordError} iconLeft iconNames={'lock'} iconSize={20} placeholder='Digite sua senha' iconViewPassword secureTextEntry/>
+            <Input setChange={setPassword} testID='password' isError={passwordError} iconLeft iconNames={'lock'} iconSize={20} placeholder='Digite sua senha' iconViewPassword setSecurity={setSecurity} security={security} secureTextEntry={security}/>
           </ContainerInputs>
           <Button onSubmit={handleSubmit} width={150} height={40} text='Entrar' disabled={!!emailError || !!passwordError}/>
           <TextLink>Você tem conta? <NavigationLink>Registrar</NavigationLink></TextLink>
