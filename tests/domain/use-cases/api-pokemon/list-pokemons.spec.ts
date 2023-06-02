@@ -10,7 +10,7 @@ describe('ListPokemonsUseCase', () => {
   const perPage: number = 25
   let sut: ListPokemons
   const { url } = httpClientParams
-  const { name } = ApiPokemonParams
+  const { name, id, height } = ApiPokemonParams
   const httpClient = mock<HttpClient>()
 
   beforeAll(() => {
@@ -39,5 +39,14 @@ describe('ListPokemonsUseCase', () => {
     await sut({ page, perPage })
 
     expect(httpClient.request).toHaveBeenNthCalledWith(2, { url: `${url}`, method: 'get' })
+  })
+
+  it('should return listPokemons on success', async () => {
+    httpClient.request
+      .mockResolvedValueOnce({ statusCode: 200, data: { results: [{ name }], count: 1 } })
+      .mockResolvedValueOnce({ statusCode: 200, data: { name, id, height } })
+    const result = await sut({ page, perPage })
+
+    expect(result).toEqual({ count: 1, pokemons: [{ name, id, height }] })
   })
 })
