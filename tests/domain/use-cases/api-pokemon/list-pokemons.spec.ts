@@ -1,6 +1,6 @@
 import { type ListPokemons, ListPokemonsUseCase } from '@/domain/use-cases/api-pokemon'
 import { type HttpClient } from '@/domain/contracts/http'
-import { httpClientParams } from '@/tests/mocks'
+import { httpClientParams, ApiPokemonParams } from '@/tests/mocks'
 import { UnexpectedError } from '@/domain/errors'
 
 import { mock } from 'jest-mock-extended'
@@ -10,10 +10,11 @@ describe('ListPokemonsUseCase', () => {
   const perPage: number = 25
   let sut: ListPokemons
   const { url } = httpClientParams
+  const { name } = ApiPokemonParams
   const httpClient = mock<HttpClient>()
 
   beforeAll(() => {
-    httpClient.request.mockResolvedValue({ statusCode: 200 })
+    httpClient.request.mockResolvedValue({ statusCode: 200, data: { results: [{ name, url }], count: 1 } })
   })
 
   beforeEach(() => {
@@ -32,5 +33,11 @@ describe('ListPokemonsUseCase', () => {
     const promise = sut({ page, perPage })
 
     await expect(promise).rejects.toThrow(new UnexpectedError())
+  })
+
+  it('should call second HttpClient if first HttpClient returns 200', async () => {
+    await sut({ page, perPage })
+
+    expect(httpClient.request).toHaveBeenNthCalledWith(2, { url: `${url}`, method: 'get' })
   })
 })
