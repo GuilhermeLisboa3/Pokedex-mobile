@@ -10,10 +10,12 @@ type Props = { validator: Validator }
 
 export const Login: React.FC<Props> = ({ validator }) => {
   const [email, setEmail] = useState('')
+  const [emailError, setEmailError] = useState<string | undefined>('')
   const [password, setPassword] = useState('')
+  const [passwordError, setPasswordError] = useState<string | undefined>('')
 
-  useEffect(() => { validator.validate('email', { email }) }, [email])
-  useEffect(() => { validator.validate('password', { password }) }, [password])
+  useEffect(() => { setEmailError(validator.validate('email', { email })) }, [email])
+  useEffect(() => { setPasswordError(validator.validate('password', { password })) }, [password])
 
   return (
     <>
@@ -22,8 +24,8 @@ export const Login: React.FC<Props> = ({ validator }) => {
           <Title>Seja bem vindo(a) {'\n'} a Pokedex Pokemon</Title>
           <Image source={logo} resizeMode='stretch'/>
           <ContainerInputs>
-            <Input setChange={setEmail} testID='email' isError={'error'} iconLeft iconNames={'mail'} iconSize={20} placeholder='Digite seu email'/>
-            <Input setChange={setPassword} testID='password' isError={'error'} iconLeft iconNames={'lock'} iconSize={20} placeholder='Digite sua senha' iconViewPassword secureTextEntry/>
+            <Input setChange={setEmail} testID='email' isError={emailError} iconLeft iconNames={'mail'} iconSize={20} placeholder='Digite seu email'/>
+            <Input setChange={setPassword} testID='password' isError={passwordError} iconLeft iconNames={'lock'} iconSize={20} placeholder='Digite sua senha' iconViewPassword secureTextEntry/>
           </ContainerInputs>
           <Button onSubmit={async () => {}} width={150} height={40} text='Entrar' disabled/>
           <TextLink>Você tem conta? <NavigationLink>Registrar</NavigationLink></TextLink>
