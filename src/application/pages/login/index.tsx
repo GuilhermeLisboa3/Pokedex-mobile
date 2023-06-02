@@ -3,13 +3,18 @@ import { Input, Button, Toast } from '@/application/components'
 import { ContainerForm } from '@/application/layouts'
 import { type Validator } from '@/application/validation'
 import { type Authentication } from '@/domain/use-cases/account'
+import { AccountContext } from '@/application/contexts'
 import logo from '@/application/assets/pokedexLogo.png'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
+import { useNavigation, type ParamListBase } from '@react-navigation/native'
+import { type StackNavigationProp } from '@react-navigation/stack'
 
 type Props = { validator: Validator, authentication: Authentication }
 
 export const Login: React.FC<Props> = ({ validator, authentication }) => {
+  const { navigate } = useNavigation<StackNavigationProp <ParamListBase>>()
+  const { setCurrentAccount } = useContext(AccountContext)
   const [toastMessage, setToastMessage] = useState('')
   const [toastIsOpen, setToastIsOpen] = useState(false)
   const [lodding, setLodding] = useState(false)
@@ -25,7 +30,9 @@ export const Login: React.FC<Props> = ({ validator, authentication }) => {
     if (lodding || emailError || passwordError) return
     setLodding(true)
     try {
-      await authentication({ email, password })
+      const account = await authentication({ email, password })
+      setCurrentAccount(account)
+      navigate('SignUp')
     } catch (error: any) {
       setToastMessage(error.message)
       setToastIsOpen(true)
