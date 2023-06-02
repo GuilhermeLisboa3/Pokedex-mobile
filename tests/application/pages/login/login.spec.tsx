@@ -72,4 +72,13 @@ describe('SignUp', () => {
 
     expect(authentication).toHaveBeenCalledWith({ email, password })
   })
+
+  it('should call Authentication only once', async () => {
+    makeSut()
+
+    simulateSubmit()
+    fireEvent.press(screen.getByRole('button', { name: 'Entrar' }))
+
+    expect(authentication).toHaveBeenCalledTimes(1)
+  })
 })
