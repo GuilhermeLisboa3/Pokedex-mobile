@@ -18,6 +18,7 @@ describe('SignUp', () => {
   const makeSut = (): void => { render(<Login validator={validator}/>) }
 
   it('should load with correct initial state', () => {
+    validator.validate.mockReturnValueOnce('error')
     makeSut()
 
     expect(screen.getByTestId('container-email')).toHaveStyle({ borderColor: '#fd4f55' })
@@ -31,5 +32,14 @@ describe('SignUp', () => {
 
     expect(validator.validate).toHaveBeenCalledWith('email', { email })
     expect(validator.validate).toHaveBeenCalledWith('password', { password })
+  })
+
+  it('should danger input if Validator return error', () => {
+    makeSut()
+    validator.validate.mockReturnValueOnce('error')
+
+    populateFields()
+
+    expect(screen.getByTestId('container-email')).toHaveStyle({ borderColor: '#fd4f55' })
   })
 })
