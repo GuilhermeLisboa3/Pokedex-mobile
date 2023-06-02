@@ -1,5 +1,5 @@
 import { Title, Image, ContainerInputs, TextLink, NavigationLink } from './styles'
-import { Input, Button } from '@/application/components'
+import { Input, Button, Toast } from '@/application/components'
 import { ContainerForm } from '@/application/layouts'
 import { type Validator } from '@/application/validation'
 import { type Authentication } from '@/domain/use-cases/account'
@@ -10,6 +10,8 @@ import React, { useState, useEffect } from 'react'
 type Props = { validator: Validator, authentication: Authentication }
 
 export const Login: React.FC<Props> = ({ validator, authentication }) => {
+  const [toastMessage, setToastMessage] = useState('')
+  const [toastIsOpen, setToastIsOpen] = useState(false)
   const [lodding, setLodding] = useState(false)
   const [email, setEmail] = useState('')
   const [emailError, setEmailError] = useState<string | undefined>('')
@@ -22,7 +24,13 @@ export const Login: React.FC<Props> = ({ validator, authentication }) => {
   const handleSubmit = async (): Promise<void> => {
     if (lodding || emailError || passwordError) return
     setLodding(true)
-    await authentication({ email, password })
+    try {
+      await authentication({ email, password })
+    } catch (error: any) {
+      setToastMessage(error.message)
+      setToastIsOpen(true)
+      setLodding(false)
+    }
   }
 
   return (
@@ -39,6 +47,7 @@ export const Login: React.FC<Props> = ({ validator, authentication }) => {
           <TextLink>Você tem conta? <NavigationLink>Registrar</NavigationLink></TextLink>
         </>
       </ContainerForm>
+      { toastIsOpen ? <Toast color='error' message={toastMessage} setIsOpen={setToastIsOpen}/> : ''}
     </>
   )
 }
