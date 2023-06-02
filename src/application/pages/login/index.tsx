@@ -27,7 +27,7 @@ export const Login: React.FC<Props> = ({ validator }) => {
             <Input setChange={setEmail} testID='email' isError={emailError} iconLeft iconNames={'mail'} iconSize={20} placeholder='Digite seu email'/>
             <Input setChange={setPassword} testID='password' isError={passwordError} iconLeft iconNames={'lock'} iconSize={20} placeholder='Digite sua senha' iconViewPassword secureTextEntry/>
           </ContainerInputs>
-          <Button onSubmit={async () => {}} width={150} height={40} text='Entrar' disabled/>
+          <Button onSubmit={async () => {}} width={150} height={40} text='Entrar' disabled={!!emailError || !!passwordError}/>
           <TextLink>Você tem conta? <NavigationLink>Registrar</NavigationLink></TextLink>
         </>
       </ContainerForm>
