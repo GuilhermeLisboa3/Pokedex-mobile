@@ -6,10 +6,20 @@ import React from 'react'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react-native'
 import { type MockProxy, mock } from 'jest-mock-extended'
 import { InvalidCredentialsError } from '@/domain/errors'
+import { AccountContext } from '@/application/contexts'
 
-describe('SignUp', () => {
-  const { email, password } = AccountParams
+jest.mock('@react-navigation/native', () => {
+  return {
+    useNavigation: () => ({
+      navigate: jest.fn()
+    })
+  }
+})
+
+describe('Login', () => {
+  const { email, password, name, token } = AccountParams
   const validator: MockProxy<Validator> = mock()
+  const setCurrentAccountMock = jest.fn()
   const authentication = jest.fn()
 
   const populateFields = (): void => {
@@ -22,7 +32,18 @@ describe('SignUp', () => {
     fireEvent.press(screen.getByRole('button', { name: 'Entrar' }))
   }
 
-  const makeSut = (): void => { render(<Login validator={validator} authentication={authentication}/>) }
+  beforeAll(() => {
+    validator.validate.mockReturnValue(undefined)
+    authentication.mockResolvedValue({ name, email, token })
+  })
+
+  const makeSut = (): void => {
+    render(
+      <AccountContext.Provider value={{ setCurrentAccount: setCurrentAccountMock }}>
+        <Login validator={validator} authentication={authentication}/>
+      </AccountContext.Provider>
+    )
+  }
 
   it('should load with correct initial state', () => {
     validator.validate.mockReturnValueOnce('error')
@@ -100,5 +121,14 @@ describe('SignUp', () => {
     await waitFor(() => screen.getByTestId('toast'))
 
     expect(screen.getByTestId('toast')).toBeTruthy()
+  })
+
+  it('should save account data on asyncStorage and go to home page', async () => {
+    makeSut()
+
+    simulateSubmit()
+    await waitFor(() => screen.getByText('Registrar'))
+
+    expect(setCurrentAccountMock).toHaveBeenCalledWith({ name, email, token })
   })
 })
