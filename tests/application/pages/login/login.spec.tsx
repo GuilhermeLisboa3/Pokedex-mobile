@@ -50,4 +50,12 @@ describe('SignUp', () => {
 
     expect(screen.getByTestId('container-email')).toHaveStyle({ borderColor: '#198754' })
   })
+
+  it('should enable submit button if form is valid', () => {
+    makeSut()
+
+    populateFields()
+
+    expect(screen.getByRole('button', { name: 'Entrar' })).toBeEnabled()
+  })
 })
