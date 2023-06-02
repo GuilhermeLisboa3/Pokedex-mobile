@@ -60,7 +60,7 @@ export const SignUp: React.FC<Props> = ({ validator, addAccount }) => {
           <Input security={ security} setSecurity={setSecurity} setChange={setPasswordConfirmation} testID='passwordConfirmation' isError={passwordConfirmationError} iconLeft iconNames={'lock'} iconSize={20} placeholder='Confirme sua senha' iconViewPassword secureTextEntry={security}/>
         </ContainerInputs>
         <Button onSubmit={handleSubmit} width={150} height={40} text='Registrar' disabled={!!nameError || !!emailError || !!passwordError || !!passwordConfirmationError}/>
-        <TextLink>Você tem conta? <NavigationLink>Entrar</NavigationLink></TextLink>
+        <TextLink>Você tem conta? <NavigationLink onPress={() => { navigate('Login') }}>Entrar</NavigationLink></TextLink>
       </>
     </ContainerForm>
     { toastIsOpen ? <Toast color='error' message={toastMessage} setIsOpen={setToastIsOpen}/> : ''}
