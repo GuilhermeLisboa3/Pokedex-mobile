@@ -2,13 +2,14 @@ import { Title, Image, ContainerInputs, TextLink, NavigationLink } from './style
 import { Input, Button } from '@/application/components'
 import { ContainerForm } from '@/application/layouts'
 import { type Validator } from '@/application/validation'
+import { type Authentication } from '@/domain/use-cases/account'
 import logo from '@/application/assets/pokedexLogo.png'
 
 import React, { useState, useEffect } from 'react'
 
-type Props = { validator: Validator }
+type Props = { validator: Validator, authentication: Authentication }
 
-export const Login: React.FC<Props> = ({ validator }) => {
+export const Login: React.FC<Props> = ({ validator, authentication }) => {
   const [email, setEmail] = useState('')
   const [emailError, setEmailError] = useState<string | undefined>('')
   const [password, setPassword] = useState('')
@@ -16,6 +17,10 @@ export const Login: React.FC<Props> = ({ validator }) => {
 
   useEffect(() => { setEmailError(validator.validate('email', { email })) }, [email])
   useEffect(() => { setPasswordError(validator.validate('password', { password })) }, [password])
+
+  const handleSubmit = async (): Promise<void> => {
+    await authentication({ email, password })
+  }
 
   return (
     <>
@@ -27,7 +32,7 @@ export const Login: React.FC<Props> = ({ validator }) => {
             <Input setChange={setEmail} testID='email' isError={emailError} iconLeft iconNames={'mail'} iconSize={20} placeholder='Digite seu email'/>
             <Input setChange={setPassword} testID='password' isError={passwordError} iconLeft iconNames={'lock'} iconSize={20} placeholder='Digite sua senha' iconViewPassword secureTextEntry/>
           </ContainerInputs>
-          <Button onSubmit={async () => {}} width={150} height={40} text='Entrar' disabled={!!emailError || !!passwordError}/>
+          <Button onSubmit={handleSubmit} width={150} height={40} text='Entrar' disabled={!!emailError || !!passwordError}/>
           <TextLink>Você tem conta? <NavigationLink>Registrar</NavigationLink></TextLink>
         </>
       </ContainerForm>
