@@ -4,9 +4,16 @@ import theme from '@/application/styles/theme'
 export const Container = styled.View`
   flex-direction: column;
   gap: 32px;
+  flex-grow: 1;
   justify-content: space-between;
   align-items: center;
   margin: 20px 0px 5px;
+`
+
+export const Image = styled.Image`
+  width: 260px;
+  height: 70px;
+  margin: 10px auto;
 `
 
 export const Search = styled.View.attrs(() => ({
