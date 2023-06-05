@@ -1,5 +1,10 @@
 import '@testing-library/jest-native/extend-expect'
-jest.mock('react-native-vector-icons/Feather', () => 'Icon')
+jest.mock('react-native-vector-icons', () => ({
+  Feather: '',
+  FontAwesome5: '',
+  MaterialCommunityIcons: '',
+  AntDesign: ''
+}))
 jest.mock('react-native-reanimated', () => {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   const View = require('react-native').View
