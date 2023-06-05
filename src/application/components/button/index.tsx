@@ -7,7 +7,7 @@ type Props = {
   height: number
   disabled: boolean
   text: string
-  onSubmit: () => Promise<void>
+  onSubmit?: () => Promise<void>
 }
 
 export const Button: React.FC<Props> = ({ onSubmit, disabled, height, width, text, ...props }) => {

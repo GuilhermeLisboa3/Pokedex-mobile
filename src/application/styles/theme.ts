@@ -4,7 +4,7 @@ export default {
     SECONDARY: '#7D7D7D',
     THIRD: '#fd4f55',
     ROOM: '#A9B0B8',
-    BOX_SHADOW: '#d9dbdfa6',
+    BOX_SHADOW: '#d0d0d0',
     SHIMMER: '#e2e3e5',
 
     DISABLED: '#fd4f5597',
