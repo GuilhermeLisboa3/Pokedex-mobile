@@ -2,8 +2,9 @@ import styled from 'styled-components/native'
 import theme from '@/application/styles/theme'
 
 export const Container = styled.View`
-  flex-direction: column;
+  display: flex;
   flex: 1;
+  flex-direction: column;
   justify-content: space-between;
   background-color: ${theme.COLORS.PRIMARY};
 `
@@ -14,18 +15,12 @@ export const Main = styled.View`
   margin-top: 20px;
 `
 
-export const Image = styled.Image`
-  width: 260px;
-  height: 70px;
-  margin: 10px auto;
-`
-
 export const ListPokemons = styled.View`
   flex-direction: row;
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
-  gap:30px;
+  flex-grow: 1;
 `
 
 export const LinkToTop = styled.Text`
