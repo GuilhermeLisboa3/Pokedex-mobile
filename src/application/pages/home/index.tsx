@@ -1,5 +1,5 @@
 import { Container, Main, ListPokemons, LinkToTop } from './styles'
-import { CardPokemon, Header, Footer, EmptyCardPokemon } from '@/application/components'
+import { Header, Footer, EmptyCardPokemon } from '@/application/components'
 import { Pagination } from './components'
 
 import React from 'react'
@@ -16,7 +16,6 @@ export const Home: React.FC = () => {
           <Pagination/>
           <ListPokemons>
             <EmptyCardPokemon/>
-            <CardPokemon/>
           </ListPokemons>
         </Main>
         <Footer/>

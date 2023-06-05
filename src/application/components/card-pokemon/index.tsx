@@ -1,4 +1,4 @@
-import { Container, IconContainer, Card, Image, Id, Name, Types, Type } from './styles'
+import { Container, IconContainer, Card, Image, Id, Name, Types, Type, Text } from './styles'
 
 import { Feather } from '@expo/vector-icons'
 
@@ -14,8 +14,8 @@ export const CardPokemon: React.FC = () => {
         <Id>Nº80</Id>
         <Name>Pikachu</Name>
         <Types>
-          <Type type='fire'>Fire</Type>
-          <Type type='fire'>Fire</Type>
+          <Type type='water'><Text type='water'>dragon</Text></Type>
+          <Type type='fire'><Text type='fire'>flying</Text></Type>
         </Types>
       </Card>
     </Container>
