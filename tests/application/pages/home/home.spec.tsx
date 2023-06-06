@@ -3,24 +3,26 @@ import { ApiPokemonParams } from '@/tests/mocks'
 
 import React from 'react'
 import { render, screen, waitFor } from '@testing-library/react-native'
+import { UnexpectedError } from '@/domain/errors'
 
 describe('Home', () => {
   const listPokemons = jest.fn()
-
-  beforeAll(() => {
-    listPokemons.mockResolvedValue({ pokemons: [ApiPokemonParams], count: 10 })
-  })
 
   const makeSut = (): void => {
     render(<Home listPokemons={listPokemons}/>)
   }
 
+  beforeAll(() => {
+    listPokemons.mockResolvedValue({ pokemons: [ApiPokemonParams], count: 10 })
+  })
+
   it('should load with correct initial state', async () => {
+    listPokemons.mockResolvedValueOnce({ pokemons: [], count: 10 })
     makeSut()
 
     expect(screen.getAllByTestId('emptyCardPokemon').length).toBe(3)
     expect(screen.queryByTestId('arrowup')).toBeFalsy()
-    await waitFor(() => screen.getAllByTestId('card-pokemon'))
+    await waitFor(() => screen.getByText('Guilherme Gonçalves Lisboa'))
   })
 
   it('should call ListPokemons', async () => {
@@ -36,5 +38,11 @@ describe('Home', () => {
 
     expect(await screen.findByText(ApiPokemonParams.name)).toBeTruthy()
     expect(screen.queryAllByTestId('emptyCardPokemon').length).toBeFalsy()
+  })
+
+  it('should render Error if ListPokemons return error', async () => {
+    listPokemons.mockRejectedValueOnce(new UnexpectedError())
+    makeSut()
+    expect(await screen.findByText(new UnexpectedError().message)).toBeTruthy()
   })
 })
