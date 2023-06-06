@@ -14,7 +14,7 @@ export const Main = styled.View`
   flex-grow: 1;
 `
 
-export const ListPokemons = styled.View`
+export const ListPokemon = styled.View`
   flex-direction: row;
   justify-content: center;
   align-items: center;
