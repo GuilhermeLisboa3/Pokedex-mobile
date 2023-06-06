@@ -18,8 +18,3 @@ export const Container = styled.View.attrs((props) => ({
   background-color: #ffffff;
   border-radius: 10px;
 `
-
-export const Image = styled.View`
-  width: 77px;
-  height: 90px;
-`
