@@ -1,7 +1,8 @@
 import { Container, Main, ListPokemon, LinkToTop } from './styles'
 import { Pagination } from './components'
-import { Header, Footer, EmptyCardPokemon, Error } from '@/application/components'
+import { Header, Footer, EmptyCardPokemon, Error, CardPokemon } from '@/application/components'
 import { type ListPokemons } from '@/domain/use-cases/api-pokemon'
+import { type ApiPokemon } from '@/domain/models'
 
 import React, { useEffect, useState } from 'react'
 import { ScrollView } from 'react-native'
@@ -13,11 +14,14 @@ type Props = {
 
 export const Home: React.FC<Props> = ({ listPokemons }) => {
   const perPage = 25
+  const [listPokemon, setListPokemon] = useState<ApiPokemon[]>([])
   const [isOpenLinkToTop] = useState(false)
   const [page] = useState(0)
   const [error] = useState<string | undefined>(undefined)
 
-  useEffect(() => { listPokemons({ perPage, page }) }, [page])
+  useEffect(() => {
+    listPokemons({ perPage, page }).then(result => { setListPokemon(result.pokemons) })
+  }, [page])
 
   return (
   <>
@@ -29,7 +33,10 @@ export const Home: React.FC<Props> = ({ listPokemons }) => {
           { error
             ? <Error/>
             : <ListPokemon>
-                <EmptyCardPokemon/>
+                { listPokemon.length > 0
+                  ? listPokemon.map(pokemon => (<CardPokemon pokemon={pokemon} key={pokemon.id}/>))
+                  : <EmptyCardPokemon/>
+                }
               </ListPokemon>
           }
         </Main>
