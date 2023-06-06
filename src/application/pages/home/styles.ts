@@ -5,14 +5,13 @@ export const Container = styled.View`
   display: flex;
   flex: 1;
   flex-direction: column;
-  justify-content: space-between;
   background-color: ${theme.COLORS.PRIMARY};
 `
 
 export const Main = styled.View`
+  margin-top: 20px;
   flex-direction: column;
   flex-grow: 1;
-  margin-top: 20px;
 `
 
 export const ListPokemons = styled.View`
@@ -20,7 +19,7 @@ export const ListPokemons = styled.View`
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
-  flex-grow: 1;
+  margin-top: 20px;
 `
 
 export const LinkToTop = styled.Text`

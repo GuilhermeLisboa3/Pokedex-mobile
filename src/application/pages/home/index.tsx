@@ -1,5 +1,5 @@
 import { Container, Main, ListPokemons, LinkToTop } from './styles'
-import { Header, Footer, EmptyCardPokemon } from '@/application/components'
+import { Header, Footer, EmptyCardPokemon, Error } from '@/application/components'
 import { Pagination } from './components'
 
 import React, { useState } from 'react'
@@ -15,9 +15,12 @@ export const Home: React.FC = () => {
         <Header/>
         <Main>
           <Pagination/>
-          <ListPokemons>
-            <EmptyCardPokemon/>
-          </ListPokemons>
+          { isOpenLinkToTop
+            ? <Error/>
+            : <ListPokemons>
+                <EmptyCardPokemon/>
+              </ListPokemons>
+          }
         </Main>
         <Footer/>
       </Container>

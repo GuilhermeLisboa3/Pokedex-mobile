@@ -8,6 +8,7 @@ export const Container = styled.View`
   justify-content: space-between;
   align-items: center;
   margin: 20px 0px 5px;
+  max-height: 225px;
 `
 
 export const Image = styled.Image`

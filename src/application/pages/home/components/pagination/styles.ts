@@ -2,7 +2,6 @@ import styled from 'styled-components/native'
 import theme from '@/application/styles/theme'
 
 export const ContainerPage = styled.View`
-  margin: 20px 0px;
   flex-direction: row;
   justify-content: center;
   align-items: center;

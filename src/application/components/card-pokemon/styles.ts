@@ -46,7 +46,6 @@ export const Card = styled.View.attrs((props) => ({
 `
 export const Image = styled.Image`
   position: absolute;
-  position: absolute;
   top: -75px;
   right: 50%;
   transform: translate(80px);
