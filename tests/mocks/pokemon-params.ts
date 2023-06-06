@@ -2,7 +2,7 @@ import faker from 'faker'
 
 export const ApiPokemonParams = {
   id: faker.datatype.uuid(),
-  name: faker.name.findName(),
+  name: faker.name.firstName(),
   sprites: { front_default: faker.internet.url() },
   types: [{ type: { name: faker.name.findName() } }],
   height: 75,
