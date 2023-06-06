@@ -8,9 +8,7 @@ jest.mock('react-native-vector-icons', () => ({
 jest.mock('expo-linear-gradient', () => ({
   LinearGradient: ''
 }))
-jest.mock('react-native-shimmer-placeholder', () => ({
-  createShimmerPlaceholder: jest.fn()
-}))
+jest.mock('react-native-shimmer-placeholder', () => 'ShimmerPlaceHolder')
 jest.mock('react-native-reanimated', () => {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   const View = require('react-native').View
