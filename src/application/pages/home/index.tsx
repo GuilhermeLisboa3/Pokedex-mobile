@@ -17,10 +17,10 @@ export const Home: React.FC<Props> = ({ listPokemons }) => {
   const [listPokemon, setListPokemon] = useState<ApiPokemon[]>([])
   const [isOpenLinkToTop] = useState(false)
   const [page] = useState(0)
-  const [error] = useState<string | undefined>(undefined)
+  const [error, setError] = useState<string | undefined>(undefined)
 
   useEffect(() => {
-    listPokemons({ perPage, page }).then(result => { setListPokemon(result.pokemons) })
+    listPokemons({ perPage, page }).then(result => { setListPokemon(result.pokemons) }).catch(error => { setError(error.message) })
   }, [page])
 
   return (
