@@ -13,10 +13,13 @@ type Props = {
 }
 
 export const Home: React.FC<Props> = ({ listPokemons }) => {
-  const perPage = 25
   const [listPokemon, setListPokemon] = useState<ApiPokemon[]>([])
+
   const [isOpenLinkToTop] = useState(false)
-  const [page] = useState(0)
+
+  const perPage = 25
+  const [page, setPage] = useState(0)
+  const [count, setCount] = useState(0)
   const [error, setError] = useState<string | undefined>(undefined)
   const [reload, setReload] = useState(false)
 
@@ -26,7 +29,12 @@ export const Home: React.FC<Props> = ({ listPokemons }) => {
   }
 
   useEffect(() => {
-    listPokemons({ perPage, page }).then(result => { setListPokemon(result.pokemons) }).catch(error => { setError(error.message) })
+    listPokemons({ perPage, page: page * perPage })
+      .then(result => {
+        setListPokemon(result.pokemons)
+        setCount(result.count)
+      })
+      .catch(error => { setError(error.message) })
   }, [page, reload])
 
   return (
@@ -35,7 +43,7 @@ export const Home: React.FC<Props> = ({ listPokemons }) => {
       <Container>
         <Header/>
         <Main>
-          <Pagination/>
+          <Pagination count={count} page={page} setPage={setPage} perPage={perPage}/>
           { error
             ? <Error error={error} reload={changeReload}/>
             : <ListPokemon>
