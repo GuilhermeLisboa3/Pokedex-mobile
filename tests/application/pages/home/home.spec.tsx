@@ -2,7 +2,7 @@ import { Home } from '@/application/pages/home'
 import { ApiPokemonParams } from '@/tests/mocks'
 
 import React from 'react'
-import { render, screen, waitFor } from '@testing-library/react-native'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react-native'
 import { UnexpectedError } from '@/domain/errors'
 
 describe('Home', () => {
@@ -44,5 +44,15 @@ describe('Home', () => {
     listPokemons.mockRejectedValueOnce(new UnexpectedError())
     makeSut()
     expect(await screen.findByText(new UnexpectedError().message)).toBeTruthy()
+  })
+
+  it('should call ListPokemons on reload', async () => {
+    listPokemons.mockRejectedValueOnce(new UnexpectedError())
+    makeSut()
+    fireEvent.press(await screen.findByText('Tentar novamente'))
+
+    expect(listPokemons).toHaveBeenCalledWith({ page: 0, perPage: 25 })
+    expect(listPokemons).toHaveBeenCalledTimes(2)
+    await waitFor(() => screen.getByText('Guilherme Gonçalves Lisboa'))
   })
 })
