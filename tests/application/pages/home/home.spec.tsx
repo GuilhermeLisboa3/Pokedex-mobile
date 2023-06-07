@@ -55,4 +55,13 @@ describe('Home', () => {
     expect(listPokemons).toHaveBeenCalledTimes(2)
     await waitFor(() => screen.getByText('Guilherme Gonçalves Lisboa'))
   })
+
+  it('should call ListPokemons if click on link', async () => {
+    makeSut()
+    fireEvent.press(screen.getAllByRole('link')[1])
+
+    expect(listPokemons).toHaveBeenCalledWith({ page: 25, perPage: 25 })
+    expect(listPokemons).toHaveBeenCalledTimes(2)
+    await waitFor(() => screen.getByText('Guilherme Gonçalves Lisboa'))
+  })
 })
