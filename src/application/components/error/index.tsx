@@ -4,7 +4,9 @@ import machoke from '@/application/assets/machoke.png'
 
 import React from 'react'
 
-export const Error: React.FC = () => {
+type Props = { reload: () => void, error: string }
+
+export const Error: React.FC<Props> = ({ error, reload }) => {
   return (
     <Container>
       <Images>
@@ -12,8 +14,8 @@ export const Error: React.FC = () => {
         <Image source={machoke} resizeMode='stretch'/>
       </Images>
       <View>
-        <Text>Algo deu errado. Tente novamente!</Text>
-        <Button>Tentar novamente</Button>
+        <Text>{error}</Text>
+        <Button onPress={reload}>Tentar novamente</Button>
       </View>
     </Container>
   )

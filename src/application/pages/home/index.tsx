@@ -18,10 +18,16 @@ export const Home: React.FC<Props> = ({ listPokemons }) => {
   const [isOpenLinkToTop] = useState(false)
   const [page] = useState(0)
   const [error, setError] = useState<string | undefined>(undefined)
+  const [reload, setReload] = useState(false)
+
+  const changeReload = (): void => {
+    setError(undefined)
+    setReload(!reload)
+  }
 
   useEffect(() => {
     listPokemons({ perPage, page }).then(result => { setListPokemon(result.pokemons) }).catch(error => { setError(error.message) })
-  }, [page])
+  }, [page, reload])
 
   return (
   <>
@@ -31,7 +37,7 @@ export const Home: React.FC<Props> = ({ listPokemons }) => {
         <Main>
           <Pagination/>
           { error
-            ? <Error/>
+            ? <Error error={error} reload={changeReload}/>
             : <ListPokemon>
                 { listPokemon.length > 0
                   ? listPokemon.map(pokemon => (<CardPokemon pokemon={pokemon} key={pokemon.id}/>))
