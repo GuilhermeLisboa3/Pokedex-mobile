@@ -43,6 +43,7 @@ export const Home: React.FC<Props> = ({ listPokemons }) => {
   return (
   <>
     <ScrollView
+    testID='scroll-home'
     contentContainerStyle={{ flexGrow: 1 }}
     onScroll={event => { setEventScroll(event.nativeEvent) }}
     ref={scrollRef}>
