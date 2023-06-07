@@ -1,21 +1,21 @@
-import { Container, Main, ListPokemon, LinkToTop } from './styles'
+import { Container, Main, ListPokemon } from './styles'
 import { Pagination } from './components'
-import { Header, Footer, EmptyCardPokemon, Error, CardPokemon } from '@/application/components'
+import { Header, Footer, EmptyCardPokemon, Error, CardPokemon, LinkToTop } from '@/application/components'
 import { type ListPokemons } from '@/domain/use-cases/api-pokemon'
 import { type ApiPokemon } from '@/domain/models'
 
-import React, { useEffect, useState } from 'react'
-import { ScrollView } from 'react-native'
-import { AntDesign } from '@expo/vector-icons'
+import React, { useEffect, useState, useRef } from 'react'
+import { ScrollView, type NativeScrollEvent } from 'react-native'
 
 type Props = {
   listPokemons: ListPokemons
 }
 
 export const Home: React.FC<Props> = ({ listPokemons }) => {
+  const scrollRef = useRef<ScrollView>(null)
   const [listPokemon, setListPokemon] = useState<ApiPokemon[]>([])
 
-  const [isOpenLinkToTop] = useState(false)
+  const [eventScroll, setEventScroll] = useState<NativeScrollEvent>()
 
   const perPage = 25
   const [page, setPage] = useState(0)
@@ -38,9 +38,14 @@ export const Home: React.FC<Props> = ({ listPokemons }) => {
       .catch(error => { setError(error.message) })
   }, [page, reload])
 
+  const handlerScrollMoveTop = (): void => { scrollRef.current?.scrollTo({ x: 0, y: 0, animated: true }) }
+
   return (
   <>
-    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+    <ScrollView
+    contentContainerStyle={{ flexGrow: 1 }}
+    onScroll={event => { setEventScroll(event.nativeEvent) }}
+    ref={scrollRef}>
       <Container>
         <Header/>
         <Main>
@@ -57,11 +62,8 @@ export const Home: React.FC<Props> = ({ listPokemons }) => {
         </Main>
         <Footer/>
       </Container>
-      </ScrollView>
-    { isOpenLinkToTop
-      ? <LinkToTop testID='arrowup'><AntDesign name="arrowup" size={20} color="white" /></LinkToTop>
-      : ''
-    }
+    </ScrollView>
+    <LinkToTop eventScroll={eventScroll} scrollMoveTop={handlerScrollMoveTop}/>
   </>
   )
 }
