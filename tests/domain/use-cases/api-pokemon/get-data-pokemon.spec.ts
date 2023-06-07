@@ -22,6 +22,7 @@ describe('GetDataPokemonUseCase', () => {
   })
 
   it('should call HttpClient with correct values', async () => {
+    httpClient.request.mockResolvedValueOnce(returnFirstRequest).mockResolvedValueOnce(returnSecondRequest)
     await sut({ idOrName: name })
 
     expect(httpClient.request).toHaveBeenCalledWith({ url: `${url}/pokemon/${name}`, method: 'get' })
@@ -40,5 +41,12 @@ describe('GetDataPokemonUseCase', () => {
     await sut({ idOrName: name })
 
     expect(httpClient.request).toHaveBeenNthCalledWith(2, { url: `${species.url}`, method: 'get' })
+  })
+
+  it('should return pokemons on success', async () => {
+    httpClient.request.mockResolvedValueOnce(returnFirstRequest).mockResolvedValueOnce(returnSecondRequest)
+    const result = await sut({ idOrName: name })
+
+    expect(result).toEqual({ pokemon: { name, abilities, height, species }, description: 'Capable of copying an enemys genetic code to instantly transform itself into a duplicate of the enemy' })
   })
 })
