@@ -64,4 +64,19 @@ describe('Home', () => {
     expect(listPokemons).toHaveBeenCalledTimes(2)
     await waitFor(() => screen.getByText('Guilherme Gonçalves Lisboa'))
   })
+
+  it('should show LinkToTop if scroll view', async () => {
+    makeSut()
+    fireEvent.scroll(screen.getByTestId('scroll-home'), {
+      nativeEvent: {
+        contentSize: { height: 600, width: 400 },
+        contentOffset: { y: 150, x: 0 },
+        layoutMeasurement: { height: 100, width: 100 }
+      }
+    })
+
+    expect(screen.queryByTestId('arrowup')).toBeTruthy()
+    fireEvent.press(screen.getByTestId('arrowup'))
+    await waitFor(() => screen.getByText('Guilherme Gonçalves Lisboa'))
+  })
 })
