@@ -10,4 +10,11 @@ describe('CardPokemon', () => {
 
     expect(screen.getByText(ApiPokemonParams.types[0].type.name)).toBeTruthy()
   })
+
+  it('should render two type', () => {
+    render(<CardPokemon pokemon={{ ...ApiPokemonParams, types: [{ type: { name: 'fire' } }, { type: { name: 'water' } }] }}/>)
+
+    expect(screen.getByText('fire')).toBeTruthy()
+    expect(screen.getByText('water')).toBeTruthy()
+  })
 })
