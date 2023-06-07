@@ -29,6 +29,7 @@ export const Home: React.FC<Props> = ({ listPokemons }) => {
   }
 
   useEffect(() => {
+    setListPokemon([])
     listPokemons({ perPage, page: page * perPage })
       .then(result => {
         setListPokemon(result.pokemons)

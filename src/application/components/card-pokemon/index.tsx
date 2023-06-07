@@ -15,7 +15,7 @@ export const CardPokemon: React.FC<Props> = ({ pokemon }) => {
       </IconContainer>
       <Card>
         <Image source={{ uri: pokemon.sprites.front_default }} style={{ width: 150, height: 150 }}/>
-        <Id>{ pokemon.id }</Id>
+        <Id>Nº{ pokemon.id }</Id>
         <Name>{ pokemon.name.substr(0, 16) }</Name>
         <Types>
           <Type type={typePokemon(0)}><Text type={typePokemon(0)}>{typePokemon(0)}</Text></Type>
