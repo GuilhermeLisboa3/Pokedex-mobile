@@ -1,6 +1,6 @@
 import { Container, Main, ListPokemon } from './styles'
 import { Pagination } from './components'
-import { Header, Footer, EmptyCardPokemon, Error, CardPokemon, LinkToTop } from '@/application/components'
+import { Header, Footer, EmptyCardPokemon, Error, CardPokemon, LinkToTop, DataPokemon } from '@/application/components'
 import { type ListPokemons } from '@/domain/use-cases/api-pokemon'
 import { type ApiPokemon } from '@/domain/models'
 
@@ -64,6 +64,7 @@ export const Home: React.FC<Props> = ({ listPokemons }) => {
         <Footer/>
       </Container>
     </ScrollView>
+    <DataPokemon/>
     <LinkToTop eventScroll={eventScroll} scrollMoveTop={handlerScrollMoveTop}/>
   </>
   )

@@ -31,6 +31,15 @@ export default {
       ICE: '#83DDFF'
     },
 
+    STAR: {
+      HP: '#DB243B',
+      ATK: '#FE9C55',
+      DEF: '#FFDA51',
+      SPA: '#85DDFE',
+      SPO: '#B3EE9F',
+      SPD: '#EF9FB4'
+    },
+
     TEXT_POKEMON: {
       ELECTRIC: '#8d7825',
       GRASS: '#2a5712',
