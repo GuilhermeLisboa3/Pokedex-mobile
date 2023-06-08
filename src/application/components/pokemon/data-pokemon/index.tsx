@@ -1,5 +1,6 @@
 import { Id, Name, TextType, Type, Types, Title } from '../styles'
-import { Container, Text, CardDataPokemon, Icon, Icons, Image, Description, Skills, Ability, TextAbility, Body, BodyData, BodyDataValue, Star, Stars, TypeStar } from './styles'
+import { Container, CardDataPokemon, Icon, Icons, Image, Description, Skills, Ability, TextAbility, Body, BodyData, BodyDataValue } from './styles'
+import { StarsPokemon } from './components'
 
 import { Feather, AntDesign } from '@expo/vector-icons'
 import { ScrollView } from 'react-native'
@@ -42,32 +43,7 @@ export const DataPokemon: React.FC = () => {
         <BodyDataValue>112</BodyDataValue>
       </BodyData>
       <Title size={20} marginTop={10}>Estatísticas</Title>
-      <Stars>
-        <Star>
-          <TypeStar star='hp'>HP</TypeStar>
-          <Text>35</Text>
-        </Star>
-        <Star>
-          <TypeStar star='atk'>ATK</TypeStar>
-          <Text>35</Text>
-        </Star>
-        <Star>
-          <TypeStar star='def'>DEF</TypeStar>
-          <Text>35</Text>
-        </Star>
-        <Star>
-          <TypeStar star='spa'>SPA</TypeStar>
-          <Text>35</Text>
-        </Star>
-        <Star>
-          <TypeStar star='spo'>SPO</TypeStar>
-          <Text>35</Text>
-        </Star>
-        <Star>
-          <TypeStar star='spd'>SPD</TypeStar>
-          <Text>35</Text>
-        </Star>
-      </Stars>
+      <StarsPokemon/>
     </ScrollView>
   </CardDataPokemon>
   </Container>
