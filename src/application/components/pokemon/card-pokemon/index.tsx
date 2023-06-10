@@ -1,16 +1,27 @@
+import { useContext } from 'react'
 import { Id, Name, TextType, Type, Types } from '../styles'
 import { Container, IconContainer, Card, Image } from './styles'
 import { type ApiPokemon } from '@/domain/models'
 
 import { Feather } from '@expo/vector-icons'
+import { CardAnimationContext } from '@/application/contexts'
 
-type Props = { pokemon: ApiPokemon }
+type Props = {
+  pokemon: ApiPokemon
+}
 
 export const CardPokemon: React.FC<Props> = ({ pokemon }) => {
+  const { cardPokemonOpen, changeCardSize, dataPokemonOpen } = useContext(CardAnimationContext)
   const typePokemon = (position: number): string => pokemon.types[position].type.name
   return (
     <>
-    <Container testID='card-pokemon'>
+    <Container
+    testID='card-pokemon'
+    onPress={ () => {
+      cardPokemonOpen(false)
+      dataPokemonOpen(true)
+      changeCardSize(380, 800)
+    }}>
       <IconContainer>
         <Feather name='heart' size={20} color={'#fd4f55'}/>
       </IconContainer>

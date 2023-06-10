@@ -28,8 +28,8 @@ export const CardDataPokemon = styled.View.attrs(() => ({
 }))`
   background-color: white;
   z-index: 1;
-  width: 95%;
-  height: 95%;
+  width: 380px;
+  height: 800px;
   border-radius: 10px;
   padding: 10px;
 `

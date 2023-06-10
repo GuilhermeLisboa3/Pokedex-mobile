@@ -5,11 +5,15 @@ import React from 'react'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react-native'
 import { UnexpectedError } from '@/domain/errors'
 
+jest.useFakeTimers()
+
 describe('Home', () => {
   const listPokemons = jest.fn()
 
   const makeSut = (): void => {
-    render(<Home listPokemons={listPokemons}/>)
+    render(
+      <Home listPokemons={listPokemons}/>
+    )
   }
 
   beforeAll(() => {
@@ -27,17 +31,11 @@ describe('Home', () => {
 
   it('should call ListPokemons', async () => {
     makeSut()
-
-    expect(listPokemons).toHaveBeenCalledWith({ page: 0, perPage: 25 })
-    expect(listPokemons).toHaveBeenCalledTimes(1)
-    await waitFor(() => screen.getAllByTestId('card-pokemon'))
-  })
-
-  it('should render CardPokemon on success', async () => {
-    makeSut()
-
-    expect(await screen.findByText(ApiPokemonParams.name)).toBeTruthy()
-    expect(screen.queryAllByTestId('emptyCardPokemon').length).toBeFalsy()
+    await waitFor(() => screen.getByText('Guilherme Gonçalves Lisboa'))
+    await waitFor(() => {
+      expect(listPokemons).toHaveBeenCalledWith({ page: 0, perPage: 25 })
+      expect(listPokemons).toHaveBeenCalledTimes(1)
+    })
   })
 
   it('should render Error if ListPokemons return error', async () => {

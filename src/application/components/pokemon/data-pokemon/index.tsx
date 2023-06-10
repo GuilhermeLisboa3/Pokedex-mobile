@@ -1,17 +1,24 @@
 import { Id, Name, TextType, Type, Types, Title } from '../styles'
 import { Container, CardDataPokemon, Icon, Icons, Image, Description, Skills, Ability, TextAbility, Body, BodyData, BodyDataValue } from './styles'
+import { CardAnimationContext } from '@/application/contexts'
 import { StarsPokemon } from './components'
 
 import { Feather, AntDesign } from '@expo/vector-icons'
 import { ScrollView } from 'react-native'
+import { useContext } from 'react'
 
 export const DataPokemon: React.FC = () => {
+  const { cardPokemonOpen, changeCardSize, dataPokemonOpen } = useContext(CardAnimationContext)
   return (
   <Container>
   <CardDataPokemon>
     <ScrollView>
       <Icons>
-        <Icon><AntDesign name='close' size={30} color={'#fd4f55'}/></Icon>
+        <Icon onPress={() => {
+          dataPokemonOpen(false)
+          cardPokemonOpen(true)
+          changeCardSize(280, 180)
+        }}><AntDesign name='close' size={30} color={'#fd4f55'}/></Icon>
         <Icon><Feather name='heart' size={26} color={'#fd4f55'}/></Icon>
       </Icons>
       <Image source={{ uri: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/9.png' }} style={{ width: 200, height: 200 }}/>

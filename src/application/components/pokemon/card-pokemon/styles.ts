@@ -1,14 +1,14 @@
 import styled from 'styled-components/native'
 import theme from '@/application/styles/theme'
 
-export const Container = styled.View`
+export const Container = styled.Pressable`
   position: relative;
 `
 
 export const IconContainer = styled.View`
   position: absolute;
   background-color: transparent;
-  top: 100px;
+  top: 10px;
   right: 0px;
   width: 35px;
   height: 30px;
@@ -29,7 +29,6 @@ export const Card = styled.View.attrs((props) => ({
   position: relative;
   margin: 0;
   width: 280px;
-  margin-top: 90px;
   height: 180px;
   background-color: #ffffff;
   flex-direction: column;

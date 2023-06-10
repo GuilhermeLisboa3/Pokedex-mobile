@@ -1,7 +1,8 @@
 import styled from 'styled-components/native'
 import theme from '@/application/styles/theme'
+import Animated from 'react-native-reanimated'
 
-export const Container = styled.View.attrs((props) => ({
+export const AnimatedView = styled(Animated.View).attrs((props) => ({
   shadowColor: theme.COLORS.BOX_SHADOW,
   shadowOffset: {
     width: 0,
@@ -11,9 +12,8 @@ export const Container = styled.View.attrs((props) => ({
   shadowRadius: 14.86,
   elevation: 18
 }))`
-  position: relative;
-  width: 280px;
-  height: 180px;
-  background-color: #ffffff;
+  margin: 0;
+  background-color: white;
   border-radius: 10px;
+  cursor: pointer;
 `

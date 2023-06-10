@@ -19,5 +19,6 @@ export const ListPokemon = styled.View`
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
-  margin-top: 20px;
+  margin-top: 90px;
+  gap: 90px;
 `

@@ -1,6 +1,6 @@
 import { Container, Main, ListPokemon } from './styles'
 import { Pagination } from './components'
-import { Header, Footer, EmptyCardPokemon, Error, CardPokemon, LinkToTop, DataPokemon } from '@/application/components'
+import { Header, Footer, EmptyCardPokemon, Error, PokemonCardAnimation, LinkToTop } from '@/application/components'
 import { type ListPokemons } from '@/domain/use-cases/api-pokemon'
 import { type ApiPokemon } from '@/domain/models'
 
@@ -55,8 +55,8 @@ export const Home: React.FC<Props> = ({ listPokemons }) => {
             ? <Error error={error} reload={changeReload}/>
             : <ListPokemon>
                 { listPokemon.length > 0
-                  ? listPokemon.map(pokemon => (<CardPokemon pokemon={pokemon} key={pokemon.id}/>))
-                  : <EmptyCardPokemon/>
+                  ? listPokemon.map(pokemon => (<PokemonCardAnimation pokemon={pokemon} key={pokemon.id}/>))
+                  : <EmptyCardPokemon quantity={3}/>
                 }
               </ListPokemon>
           }
@@ -64,7 +64,6 @@ export const Home: React.FC<Props> = ({ listPokemons }) => {
         <Footer/>
       </Container>
     </ScrollView>
-    <DataPokemon/>
     <LinkToTop eventScroll={eventScroll} scrollMoveTop={handlerScrollMoveTop}/>
   </>
   )
