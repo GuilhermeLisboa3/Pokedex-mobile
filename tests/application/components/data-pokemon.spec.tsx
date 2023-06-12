@@ -3,7 +3,7 @@ import { ApiPokemonParams } from '@/tests/mocks'
 import { CardAnimationContext } from '@/application/contexts'
 
 import React from 'react'
-import { render, screen } from '@testing-library/react-native'
+import { fireEvent, render, screen } from '@testing-library/react-native'
 
 describe('DataPokemon', () => {
   it('should render one type and ability', () => {
@@ -33,5 +33,21 @@ describe('DataPokemon', () => {
     expect(screen.getByText('water')).toBeTruthy()
     expect(screen.getByText('static')).toBeTruthy()
     expect(screen.getByText('bold')).toBeTruthy()
+  })
+
+  it('should call methods if click on card', () => {
+    const cardPokemonOpen = jest.fn()
+    const changeCardSize = jest.fn()
+    const dataPokemonOpen = jest.fn()
+    render(
+    <CardAnimationContext.Provider value={{ cardPokemonOpen, changeCardSize, dataPokemonOpen }}>
+      <DataPokemon pokemon={ApiPokemonParams} description='any'/>
+    </CardAnimationContext.Provider>
+    )
+
+    fireEvent.press(screen.getByTestId('close-data-pokemon'))
+    expect(cardPokemonOpen).toHaveBeenCalledWith(true)
+    expect(dataPokemonOpen).toHaveBeenCalledWith(false)
+    expect(changeCardSize).toHaveBeenCalledWith(280, 180)
   })
 })
