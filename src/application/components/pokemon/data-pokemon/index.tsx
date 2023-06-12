@@ -39,8 +39,8 @@ export const DataPokemon: React.FC<Props> = ({ pokemon, description }) => {
       <Skills>
         <Ability ability={typePokemon(0)}><TextAbility ability={typePokemon(0)}>{abilityPokemon(0)}</TextAbility></Ability>
         { pokemon.abilities.length > 1
-          ? <Ability ability={pokemon.types.length > 1 ? typePokemon(1) : typePokemon(0) }>
-              <TextAbility ability={pokemon.types.length > 1 ? typePokemon(1) : typePokemon(0) }>{abilityPokemon(1)}</TextAbility>
+          ? <Ability ability={pokemon.types.length > 1 ? typePokemon(1) : typePokemon(0) } testID='ability'>
+              <TextAbility ability={pokemon.types.length > 1 ? typePokemon(1) : typePokemon(0) } testID='text-ability'>{abilityPokemon(1)}</TextAbility>
             </Ability>
           : ''
         }
