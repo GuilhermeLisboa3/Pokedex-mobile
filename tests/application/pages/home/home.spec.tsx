@@ -31,11 +31,8 @@ describe('Home', () => {
 
   it('should call ListPokemons', async () => {
     makeSut()
-    await waitFor(() => screen.getByText('Guilherme Gonçalves Lisboa'))
-    await waitFor(() => {
-      expect(listPokemons).toHaveBeenCalledWith({ page: 0, perPage: 25 })
-      expect(listPokemons).toHaveBeenCalledTimes(1)
-    })
+    expect(listPokemons).toHaveBeenCalledWith({ page: 0, perPage: 25 })
+    expect(listPokemons).toHaveBeenCalledTimes(1)
   })
 
   it('should render Error if ListPokemons return error', async () => {

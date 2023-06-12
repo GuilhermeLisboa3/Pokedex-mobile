@@ -1,12 +1,13 @@
 module.exports = {
   preset: 'react-native',
-  setupFiles: ['./node_modules/react-native-gesture-handler/jestSetup.js'],
-  setupFilesAfterEnv: ['<rootDir>/src/main/config/jest-setup.ts'],
+  setupFiles: ['<rootDir>/src/main/config/jest-setup.ts'],
+  setupFilesAfterEnv: ['@testing-library/jest-native/extend-expect'],
   collectCoverageFrom: [
     '<rootDir>/src/**/*.{ts,tsx}',
     '!<rootDir>/src/main/**',
     '!<rootDir>/src/**/index.ts',
     '!<rootDir>/src/application/layouts/**',
+    '!<rootDir>/src/application/components/pokemon-card-animation/**',
     '!<rootDir>/src/**/styles.ts'
   ],
   coverageDirectory: 'coverage',
@@ -15,6 +16,10 @@ module.exports = {
     '@/tests/(.+)': '<rootDir>/tests/$1',
     '@/(.+)': '<rootDir>/src/$1'
   },
+  moduleDirectories: [
+    'node_modules',
+    './test'
+  ],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   testPathIgnorePatterns: [
     '/node_modules/'

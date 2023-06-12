@@ -1,4 +1,4 @@
-import '@testing-library/jest-native/extend-expect'
+import 'react-native-gesture-handler/jestSetup'
 jest.mock('react-native-vector-icons', () => ({
   Feather: '',
   FontAwesome5: '',
@@ -9,6 +9,7 @@ jest.mock('expo-linear-gradient', () => ({
   LinearGradient: ''
 }))
 jest.mock('react-native-shimmer-placeholder', () => 'ShimmerPlaceHolder')
+
 jest.mock('react-native-reanimated', () => {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   const View = require('react-native').View
@@ -22,9 +23,6 @@ jest.mock('react-native-reanimated', () => {
     cond: jest.fn(),
     interpolate: jest.fn(),
     View,
-    useSharedValue: jest.fn(),
-    useAnimatedStyle: jest.fn(),
-    withTiming: jest.fn(),
     Extrapolate: { CLAMP: jest.fn() },
     Transition: {
       Together: 'Together',
@@ -33,3 +31,4 @@ jest.mock('react-native-reanimated', () => {
     }
   }
 })
+jest.mock('react-native/Libraries/Animated/NativeAnimatedHelper')
