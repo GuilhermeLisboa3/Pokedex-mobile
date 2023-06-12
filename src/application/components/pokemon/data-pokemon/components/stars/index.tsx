@@ -1,31 +1,33 @@
 import { Text, Star, Stars, TypeStar } from './styles'
 
-export const StarsPokemon: React.FC = () => {
+type Props = { stars: Array<{ base_stat: number }> }
+
+export const StarsPokemon: React.FC<Props> = ({ stars }) => {
   return (
   <Stars>
     <Star>
       <TypeStar star='hp'>HP</TypeStar>
-      <Text>35</Text>
+      <Text>{stars[0].base_stat}</Text>
     </Star>
     <Star>
       <TypeStar star='atk'>ATK</TypeStar>
-      <Text>35</Text>
+      <Text>{stars[1].base_stat}</Text>
     </Star>
     <Star>
       <TypeStar star='def'>DEF</TypeStar>
-      <Text>35</Text>
+      <Text>{stars[2].base_stat}</Text>
     </Star>
     <Star>
       <TypeStar star='spa'>SPA</TypeStar>
-      <Text>35</Text>
+      <Text>{stars[3].base_stat}</Text>
     </Star>
     <Star>
       <TypeStar star='spo'>SPO</TypeStar>
-      <Text>35</Text>
+      <Text>{stars[4].base_stat}</Text>
     </Star>
     <Star>
       <TypeStar star='spd'>SPD</TypeStar>
-      <Text>35</Text>
+      <Text>{stars[5].base_stat}</Text>
     </Star>
   </Stars>
   )

@@ -2,13 +2,18 @@ import { Id, Name, TextType, Type, Types, Title } from '../styles'
 import { Container, CardDataPokemon, Icon, Icons, Image, Description, Skills, Ability, TextAbility, Body, BodyData, BodyDataValue } from './styles'
 import { CardAnimationContext } from '@/application/contexts'
 import { StarsPokemon } from './components'
+import { type ApiPokemon } from '@/domain/models'
 
 import { Feather, AntDesign } from '@expo/vector-icons'
 import { ScrollView } from 'react-native'
 import { useContext } from 'react'
 
-export const DataPokemon: React.FC = () => {
+type Props = { pokemon: ApiPokemon, description: string }
+
+export const DataPokemon: React.FC<Props> = ({ pokemon, description }) => {
   const { cardPokemonOpen, changeCardSize, dataPokemonOpen } = useContext(CardAnimationContext)
+  const typePokemon = (position: number): string => pokemon.types[position].type.name
+  const abilityPokemon = (position: number): string => pokemon.abilities[position].ability.name
   return (
   <Container>
   <CardDataPokemon>
@@ -21,36 +26,41 @@ export const DataPokemon: React.FC = () => {
         }}><AntDesign name='close' size={30} color={'#fd4f55'}/></Icon>
         <Icon><Feather name='heart' size={26} color={'#fd4f55'}/></Icon>
       </Icons>
-      <Image source={{ uri: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/9.png' }} style={{ width: 200, height: 200 }}/>
-      <Id size={25} marginTop={0}>Nº9</Id>
-      <Name size={25} marginTop={0}>Blastoise</Name>
+      <Image source={{ uri: pokemon.sprites.front_default }} style={{ width: 200, height: 200 }}/>
+      <Id size={25} marginTop={0}>Nº{pokemon.id}</Id>
+      <Name size={25} marginTop={0}>{pokemon.name}</Name>
       <Types>
-        <Type type='water'><TextType type='water'>water</TextType></Type>
-        <Type type='ice'><TextType type='ice'>ice</TextType></Type>
+        <Type type={typePokemon(0)}><TextType type={typePokemon(0)}>{typePokemon(0)}</TextType></Type>
+        {pokemon.types.length > 1 ? <Type type={typePokemon(1)}><TextType type={typePokemon(1)}>{typePokemon(1)}</TextType></Type> : ''}
       </Types>
       <Title size={20} marginTop={10}>Descrição</Title>
-      <Description>Capable of copying an enemys genetic code to instantly transform itself into a duplicate of the enemy</Description>
+      <Description>{description}</Description>
       <Title size={20} marginTop={10}>Habilidades</Title>
       <Skills>
-        <Ability ability='fire'><TextAbility ability='fire'>static</TextAbility></Ability>
-        <Ability ability='dragon'><TextAbility ability='dragon'>static</TextAbility></Ability>
+        <Ability ability={typePokemon(0)}><TextAbility ability={typePokemon(0)}>{abilityPokemon(0)}</TextAbility></Ability>
+        { pokemon.abilities.length > 1
+          ? <Ability ability={pokemon.types.length > 1 ? typePokemon(1) : typePokemon(0) }>
+              <TextAbility ability={pokemon.types.length > 1 ? typePokemon(1) : typePokemon(0) }>{abilityPokemon(1)}</TextAbility>
+            </Ability>
+          : ''
+        }
       </Skills>
       <Body>
         <BodyData>
           <Title size={20} marginTop={0}>Altura</Title>
-          <BodyDataValue>30</BodyDataValue>
+          <BodyDataValue>{pokemon.height}</BodyDataValue>
         </BodyData>
         <BodyData>
           <Title size={20} marginTop={0}>Peso</Title>
-          <BodyDataValue>60kg</BodyDataValue>
+          <BodyDataValue>{pokemon.weight}kg</BodyDataValue>
         </BodyData>
       </Body>
       <BodyData>
         <Title size={20} marginTop={0}>Base Exp</Title>
-        <BodyDataValue>112</BodyDataValue>
+        <BodyDataValue>{pokemon.base_experience}</BodyDataValue>
       </BodyData>
       <Title size={20} marginTop={10}>Estatísticas</Title>
-      <StarsPokemon/>
+      <StarsPokemon stars={pokemon.stats}/>
     </ScrollView>
   </CardDataPokemon>
   </Container>

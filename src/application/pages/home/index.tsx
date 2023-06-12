@@ -55,7 +55,7 @@ export const Home: React.FC<Props> = ({ listPokemons }) => {
             ? <Error error={error} reload={changeReload}/>
             : <ListPokemon>
                 { listPokemon.length > 0
-                  ? listPokemon.map(pokemon => (<PokemonCardAnimation pokemon={pokemon} key={pokemon.id}/>))
+                  ? listPokemon.map(pokemon => (<PokemonCardAnimation pokemon={pokemon} description='any' key={pokemon.id}/>))
                   : <EmptyCardPokemon quantity={3}/>
                 }
               </ListPokemon>

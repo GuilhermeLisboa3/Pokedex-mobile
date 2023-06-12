@@ -8,9 +8,9 @@ import { CardAnimationContext } from '@/application/contexts'
 import { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated'
 import { useState } from 'react'
 
-type Props = { pokemon: ApiPokemon }
+type Props = { pokemon: ApiPokemon, description: string }
 
-export const PokemonCardAnimation: React.FC<Props> = ({ pokemon }) => {
+export const PokemonCardAnimation: React.FC<Props> = ({ pokemon, description }) => {
   const [dataPokemonOpen, setDataPokemonOpen] = useState(false)
   const [cardPokemonOpen, setCardPokemonOpen] = useState(true)
   const widthCard = useSharedValue(280)
@@ -32,7 +32,7 @@ export const PokemonCardAnimation: React.FC<Props> = ({ pokemon }) => {
         {
           dataPokemonOpen
             ? widthCard.value === 380
-              ? <DataPokemon/>
+              ? <DataPokemon pokemon={pokemon} description={description}/>
               : ''
             : ''
         }
