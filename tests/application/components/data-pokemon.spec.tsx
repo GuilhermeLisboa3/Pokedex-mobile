@@ -34,6 +34,21 @@ describe('DataPokemon', () => {
     expect(screen.getByText('static')).toBeTruthy()
     expect(screen.getByText('bold')).toBeTruthy()
   })
+  it('should have first type style if not two types', () => {
+    render(
+      <CardAnimationContext.Provider value={{ cardPokemonOpen: jest.fn(), changeCardSize: jest.fn(), dataPokemonOpen: jest.fn() }}>
+        <DataPokemon pokemon={
+          {
+            ...ApiPokemonParams,
+            types: [{ type: { name: 'fire' } }],
+            abilities: [{ ability: { name: 'static' } }, { ability: { name: 'bold' } }]
+          } } description='any'/>
+      </CardAnimationContext.Provider>
+    )
+
+    expect(screen.getByTestId('text-ability')).toHaveStyle({ color: '#793d13' })
+    expect(screen.getByTestId('ability')).toHaveStyle(null)
+  })
 
   it('should call methods if click on card', () => {
     const cardPokemonOpen = jest.fn()
