@@ -23,7 +23,7 @@ export const DataPokemon: React.FC<Props> = ({ pokemon, description }) => {
           dataPokemonOpen(false)
           cardPokemonOpen(true)
           changeCardSize(280, 180)
-        }}><AntDesign name='close' size={30} color={'#fd4f55'}/></Icon>
+        }} testID='close-data-pokemon'><AntDesign name='close' size={30} color={'#fd4f55'}/></Icon>
         <Icon><Feather name='heart' size={26} color={'#fd4f55'}/></Icon>
       </Icons>
       <Image source={{ uri: pokemon.sprites.front_default }} style={{ width: 200, height: 200 }}/>
