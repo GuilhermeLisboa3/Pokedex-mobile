@@ -19,6 +19,7 @@ describe('Home', () => {
 
   beforeAll(() => {
     listPokemons.mockResolvedValue({ pokemons: [ApiPokemonParams], count: 10 })
+    getDataPokemon.mockResolvedValue({ pokemon: ApiPokemonParams, description: 'any_description' })
   })
 
   it('should load with correct initial state', async () => {
@@ -93,5 +94,13 @@ describe('Home', () => {
     expect(listPokemons).toHaveBeenCalledWith({ page: 0, perPage: 25 })
     expect(listPokemons).toHaveBeenCalledTimes(2)
     await waitFor(() => screen.getByText('Guilherme Gonçalves Lisboa'))
+  })
+
+  it('should render EmptyListPokemon if search return error', async () => {
+    getDataPokemon.mockRejectedValueOnce(new Error())
+    makeSut()
+    populateField('search-field', 'any_value')
+    act(() => { jest.advanceTimersByTime(1000) })
+    expect(screen.getAllByTestId('emptyCardPokemon')).toBeTruthy()
   })
 })
