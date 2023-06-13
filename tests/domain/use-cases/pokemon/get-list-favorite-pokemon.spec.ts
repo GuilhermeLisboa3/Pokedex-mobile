@@ -1,6 +1,6 @@
 import { type GetListFavoritePokemon, GetListFavoritePokemonUseCase } from '@/domain/use-cases/pokemon'
 import { type HttpClient } from '@/domain/contracts/http'
-import { httpClientParams } from '@/tests/mocks'
+import { httpClientParams, ApiPokemonParams } from '@/tests/mocks'
 import { AccessDeniedError, UnexpectedError } from '@/domain/errors'
 
 import { mock } from 'jest-mock-extended'
@@ -11,7 +11,7 @@ describe('GetListFavoritePokemonUseCase', () => {
   const httpClient = mock<HttpClient>()
 
   beforeAll(() => {
-    httpClient.request.mockResolvedValue({ statusCode: 200 })
+    httpClient.request.mockResolvedValue({ statusCode: 200, data: [ApiPokemonParams] })
   })
 
   beforeEach(() => {
@@ -39,5 +39,11 @@ describe('GetListFavoritePokemonUseCase', () => {
     const promise = sut()
 
     await expect(promise).rejects.toThrow(new UnexpectedError())
+  })
+
+  it('should return listFavoritePokemon if HttpClient return 200', async () => {
+    const result = await sut()
+
+    expect(result).toEqual([ApiPokemonParams])
   })
 })
