@@ -7,7 +7,7 @@ export class AuthorizeHttpClientDecorator {
   async request (data: HttpRequest): Promise<void> {
     const account = await this.getStorage.get({ key: 'pokemon-token' })
     if (account?.token) {
-      Object.assign(data, { headers: { ...data.headers } })
+      Object.assign(data, { headers: { ...data.headers, authorization: `Bearer ${account.token as string}` } })
     }
     this.httpClient.request(data)
   }
