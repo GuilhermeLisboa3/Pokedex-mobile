@@ -1,18 +1,19 @@
 import { Home } from '@/application/pages/home'
-import { ApiPokemonParams } from '@/tests/mocks'
+import { ApiPokemonParams, populateField } from '@/tests/mocks'
 
 import React from 'react'
-import { fireEvent, render, screen, waitFor } from '@testing-library/react-native'
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react-native'
 import { UnexpectedError } from '@/domain/errors'
 
 jest.useFakeTimers()
 
 describe('Home', () => {
   const listPokemons = jest.fn()
+  const getDataPokemon = jest.fn()
 
   const makeSut = (): void => {
     render(
-      <Home listPokemons={listPokemons}/>
+      <Home listPokemons={listPokemons} getDataPokemon={getDataPokemon}/>
     )
   }
 
@@ -72,6 +73,15 @@ describe('Home', () => {
 
     expect(screen.queryByTestId('arrowup')).toBeTruthy()
     fireEvent.press(screen.getByTestId('arrowup'))
+    await waitFor(() => screen.getByText('Guilherme Gonçalves Lisboa'))
+  })
+
+  it('should call getDataPokemon', async () => {
+    makeSut()
+    populateField('search-field', ApiPokemonParams.name.toLocaleUpperCase())
+    act(() => { jest.advanceTimersByTime(1000) })
+    expect(getDataPokemon).toHaveBeenCalledWith({ idOrName: ApiPokemonParams.name.toLocaleLowerCase() })
+    expect(getDataPokemon).toHaveBeenCalledTimes(1)
     await waitFor(() => screen.getByText('Guilherme Gonçalves Lisboa'))
   })
 })
