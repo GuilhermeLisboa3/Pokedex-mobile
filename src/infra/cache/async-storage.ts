@@ -1,4 +1,4 @@
-import { type SetStorage } from '@/domain/contracts/cache'
+import { type SetStorage, type GetStorage } from '@/domain/contracts/cache'
 import storage from '@react-native-async-storage/async-storage'
 
 export class AsyncStorageAdapter {
@@ -8,5 +8,10 @@ export class AsyncStorageAdapter {
     } else {
       await storage.removeItem(key)
     }
+  }
+
+  async get ({ key }: GetStorage.Input): Promise<any> {
+    const value = await storage.getItem(key)
+    return JSON.parse(value!)
   }
 }
