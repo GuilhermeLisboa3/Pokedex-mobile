@@ -1,5 +1,5 @@
 import { type HttpClient } from '@/domain/contracts/http'
-import { AccessDeniedError } from '@/domain/errors'
+import { AccessDeniedError, UnexpectedError } from '@/domain/errors'
 import { type Pokemon } from '@/domain/models'
 
 type Setup = (url: string, httpClient: HttpClient<Pokemon[]>) => GetListFavoritePokemon
@@ -10,5 +10,6 @@ export const GetListFavoritePokemonUseCase: Setup = (url, httpClient) => async (
   switch (statusCode) {
     case 200: return undefined
     case 403: throw new AccessDeniedError()
+    default: throw new UnexpectedError()
   }
 }
