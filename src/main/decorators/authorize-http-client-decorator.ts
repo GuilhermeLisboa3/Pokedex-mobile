@@ -5,6 +5,10 @@ export class AuthorizeHttpClientDecorator {
   constructor (private readonly getStorage: GetStorage, private readonly httpClient: HttpClient) {}
 
   async request (data: HttpRequest): Promise<void> {
-    this.getStorage.get({ key: 'pokemon-token' })
+    const account = await this.getStorage.get({ key: 'pokemon-token' })
+    if (account?.token) {
+      Object.assign(data, { headers: { ...data.headers } })
+    }
+    this.httpClient.request(data)
   }
 }
