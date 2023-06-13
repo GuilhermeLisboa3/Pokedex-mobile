@@ -29,4 +29,15 @@ describe('AsyncStorageAdapter', () => {
       expect(AsyncStorageMock.removeItem).toHaveBeenCalledWith(key)
     })
   })
+
+  describe('get()', () => {
+    it('should call LocalStorage.get with correct value', async () => {
+      await AsyncStorageMock.setItem(key, JSON.stringify(value))
+
+      const result = await sut.get({ key })
+
+      expect(AsyncStorageMock.getItem).toHaveBeenCalledWith(key)
+      expect(result).toEqual(value)
+    })
+  })
 })
