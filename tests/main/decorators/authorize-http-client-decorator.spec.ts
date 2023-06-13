@@ -46,4 +46,10 @@ describe('AuthorizeHttpClientDecorator', () => {
 
     expect(httpClient.request).toHaveBeenCalledWith({ url, method, headers: { field: 'any_field', authorization: `Bearer ${token}` } })
   })
+
+  it('should return the same result as HttpClient', async () => {
+    const result = await sut.request({ url, method, headers, body })
+
+    expect(result).toEqual({ data, statusCode })
+  })
 })
