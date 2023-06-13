@@ -20,4 +20,12 @@ describe('AuthorizeHttpClientDecorator', () => {
 
     expect(getStorage.get).toHaveBeenCalledWith({ key: 'pokemon-token' })
   })
+
+  it('should not add headers if GetStorage is invalid', async () => {
+    getStorage.get.mockResolvedValueOnce(null)
+
+    await sut.request({ url, method })
+
+    expect(httpClient.request).toHaveBeenCalledWith({ url, method })
+  })
 })
