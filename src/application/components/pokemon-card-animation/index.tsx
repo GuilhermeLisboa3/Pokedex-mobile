@@ -1,16 +1,15 @@
 import { AnimatedView } from './styles'
 import { type ApiPokemon } from '@/domain/models'
 import { CardPokemon } from '../pokemon/card-pokemon'
-import { EmptyCardPokemon } from '../pokemon/card-pokemon/components'
 import { DataPokemon } from '../pokemon/data-pokemon'
 import { CardAnimationContext } from '@/application/contexts'
 
 import { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated'
 import { useState } from 'react'
 
-type Props = { pokemon: ApiPokemon, description: string }
+type Props = { pokemon: ApiPokemon }
 
-export const PokemonCardAnimation: React.FC<Props> = ({ pokemon, description }) => {
+export const PokemonCardAnimation: React.FC<Props> = ({ pokemon }) => {
   const [dataPokemonOpen, setDataPokemonOpen] = useState(false)
   const [cardPokemonOpen, setCardPokemonOpen] = useState(true)
   const widthCard = useSharedValue(280)
@@ -28,19 +27,15 @@ export const PokemonCardAnimation: React.FC<Props> = ({ pokemon, description }) 
 
   return (
     <CardAnimationContext.Provider value={{ changeCardSize, cardPokemonOpen: setCardPokemonOpen, dataPokemonOpen: setDataPokemonOpen }}>
-      <AnimatedView style={animatedStyle}>
+      <AnimatedView style={animatedStyle} testID='card-animation'>
         {
           dataPokemonOpen
-            ? widthCard.value === 380
-              ? <DataPokemon pokemon={pokemon} description={description}/>
-              : ''
+            ? <DataPokemon pokemon={pokemon}/>
             : ''
         }
         {
           cardPokemonOpen
-            ? widthCard.value === 280
-              ? <CardPokemon pokemon={pokemon}/>
-              : <EmptyCardPokemon quantity={1}/>
+            ? <CardPokemon pokemon={pokemon}/>
             : ''
         }
       </AnimatedView>

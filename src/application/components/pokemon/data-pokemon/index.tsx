@@ -1,5 +1,5 @@
 import { Id, Name, TextType, Type, Types, Title } from '../styles'
-import { Container, CardDataPokemon, Icon, Icons, Image, Description, Skills, Ability, TextAbility, Body, BodyData, BodyDataValue } from './styles'
+import { Icon, Icons, Image, Skills, Ability, TextAbility, Body, BodyData, BodyDataValue } from './styles'
 import { CardAnimationContext } from '@/application/contexts'
 import { StarsPokemon } from './components'
 import { type ApiPokemon } from '@/domain/models'
@@ -8,15 +8,13 @@ import { Feather, AntDesign } from '@expo/vector-icons'
 import { ScrollView } from 'react-native'
 import { useContext } from 'react'
 
-type Props = { pokemon: ApiPokemon, description: string }
+type Props = { pokemon: ApiPokemon }
 
-export const DataPokemon: React.FC<Props> = ({ pokemon, description }) => {
+export const DataPokemon: React.FC<Props> = ({ pokemon }) => {
   const { cardPokemonOpen, changeCardSize, dataPokemonOpen } = useContext(CardAnimationContext)
   const typePokemon = (position: number): string => pokemon.types[position].type.name
   const abilityPokemon = (position: number): string => pokemon.abilities[position].ability.name
   return (
-  <Container>
-  <CardDataPokemon>
     <ScrollView>
       <Icons>
         <Icon onPress={() => {
@@ -33,9 +31,7 @@ export const DataPokemon: React.FC<Props> = ({ pokemon, description }) => {
         <Type type={typePokemon(0)}><TextType type={typePokemon(0)}>{typePokemon(0)}</TextType></Type>
         {pokemon.types.length > 1 ? <Type type={typePokemon(1)}><TextType type={typePokemon(1)}>{typePokemon(1)}</TextType></Type> : ''}
       </Types>
-      <Title size={20} marginTop={10}>Descrição</Title>
-      <Description>{description}</Description>
-      <Title size={20} marginTop={10}>Habilidades</Title>
+      <Title size={20} marginTop={15}>Habilidades</Title>
       <Skills>
         <Ability ability={typePokemon(0)}><TextAbility ability={typePokemon(0)}>{abilityPokemon(0)}</TextAbility></Ability>
         { pokemon.abilities.length > 1
@@ -62,7 +58,5 @@ export const DataPokemon: React.FC<Props> = ({ pokemon, description }) => {
       <Title size={20} marginTop={10}>Estatísticas</Title>
       <StarsPokemon stars={pokemon.stats}/>
     </ScrollView>
-  </CardDataPokemon>
-  </Container>
   )
 }

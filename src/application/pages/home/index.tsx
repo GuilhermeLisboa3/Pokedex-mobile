@@ -39,7 +39,6 @@ export const Home: React.FC<Props> = ({ listPokemons }) => {
   }, [page, reload])
 
   const handlerScrollMoveTop = (): void => { scrollRef.current?.scrollTo({ x: 0, y: 0, animated: true }) }
-
   return (
   <>
     <ScrollView
@@ -55,7 +54,7 @@ export const Home: React.FC<Props> = ({ listPokemons }) => {
             ? <Error error={error} reload={changeReload}/>
             : <ListPokemon>
                 { listPokemon.length > 0
-                  ? listPokemon.map(pokemon => (<PokemonCardAnimation pokemon={pokemon} description='any' key={pokemon.id}/>))
+                  ? listPokemon.map(pokemon => (<PokemonCardAnimation pokemon={pokemon} key={pokemon.id}/>))
                   : <EmptyCardPokemon quantity={3}/>
                 }
               </ListPokemon>
