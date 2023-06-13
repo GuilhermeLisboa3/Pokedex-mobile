@@ -1,13 +1,13 @@
 import { createStackNavigator } from '@react-navigation/stack'
 import { MakeSignUp, MakeLogin, MakeHome } from '@/main/factories/application/pages'
 import { AccountContext } from '@/application/contexts'
-import { setCurrentAccountAdapter } from '@/main/adapters'
+import { setCurrentAccountAdapter, getCurrentAccountAdapter } from '@/main/adapters'
 
 const { Navigator, Screen } = createStackNavigator()
 
 export const Router: React.FC = () => {
   return (
-    <AccountContext.Provider value={{ setCurrentAccount: setCurrentAccountAdapter }}>
+    <AccountContext.Provider value={{ setCurrentAccount: setCurrentAccountAdapter, getCurrentAccount: getCurrentAccountAdapter }}>
       <Navigator screenOptions={{ headerShown: false }} initialRouteName='Home'>
         <Screen name="Home" component={MakeHome}/>
         <Screen name="Login" component={MakeLogin}/>
