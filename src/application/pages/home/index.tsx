@@ -46,6 +46,10 @@ export const Home: React.FC<Props> = ({ listPokemons, getDataPokemon }) => {
 
   const searchPokemon = async (namePokemon?: string): Promise<void> => {
     if (namePokemon === undefined) return
+    if (namePokemon.length === 0) {
+      changeReload()
+      return
+    }
     await getDataPokemon({ idOrName: namePokemon })
   }
 
