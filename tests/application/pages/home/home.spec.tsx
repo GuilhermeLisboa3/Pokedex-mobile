@@ -84,4 +84,14 @@ describe('Home', () => {
     expect(getDataPokemon).toHaveBeenCalledTimes(1)
     await waitFor(() => screen.getByText('Guilherme Gonçalves Lisboa'))
   })
+
+  it('should call ListPokemon if search is empty', async () => {
+    makeSut()
+    populateField('search-field', 'any_name')
+    populateField('search-field', '')
+    act(() => { jest.advanceTimersByTime(1000) })
+    expect(listPokemons).toHaveBeenCalledWith({ page: 0, perPage: 25 })
+    expect(listPokemons).toHaveBeenCalledTimes(2)
+    await waitFor(() => screen.getByText('Guilherme Gonçalves Lisboa'))
+  })
 })
