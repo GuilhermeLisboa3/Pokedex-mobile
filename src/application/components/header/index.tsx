@@ -1,6 +1,6 @@
+import { NoAuth, Auth } from './components'
 import { Container, Search, Input, ButtonIcon, Navigation, Image } from './styles'
 import logo from '@/application/assets/pokedexLogo.png'
-import { NoAuth, Auth } from './components'
 import { AccountContext } from '@/application/contexts'
 
 import { MaterialCommunityIcons } from '@expo/vector-icons'

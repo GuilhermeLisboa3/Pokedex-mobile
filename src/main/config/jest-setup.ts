@@ -3,7 +3,8 @@ jest.mock('react-native-vector-icons', () => ({
   Feather: '',
   FontAwesome5: '',
   MaterialCommunityIcons: '',
-  AntDesign: ''
+  AntDesign: '',
+  MaterialIcons: ''
 }))
 jest.mock('expo-linear-gradient', () => ({
   LinearGradient: ''
