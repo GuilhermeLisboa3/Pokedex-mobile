@@ -39,6 +39,7 @@ describe('Home', () => {
     makeSut()
     expect(listPokemons).toHaveBeenCalledWith({ page: 0, perPage: 25 })
     expect(listPokemons).toHaveBeenCalledTimes(1)
+    await waitFor(() => screen.getByTestId('card-pokemon'))
   })
 
   it('should render Error if ListPokemons return error', async () => {
@@ -54,7 +55,7 @@ describe('Home', () => {
 
     expect(listPokemons).toHaveBeenCalledWith({ page: 0, perPage: 25 })
     expect(listPokemons).toHaveBeenCalledTimes(2)
-    await waitFor(() => screen.getByText('Guilherme Gonçalves Lisboa'))
+    await waitFor(() => screen.getByTestId('card-pokemon'))
   })
 
   it('should call ListPokemons if click on link', async () => {
@@ -63,7 +64,7 @@ describe('Home', () => {
 
     expect(listPokemons).toHaveBeenCalledWith({ page: 25, perPage: 25 })
     expect(listPokemons).toHaveBeenCalledTimes(2)
-    await waitFor(() => screen.getByText('Guilherme Gonçalves Lisboa'))
+    await waitFor(() => screen.getByTestId('card-pokemon'))
   })
 
   it('should show LinkToTop if scroll view', async () => {
@@ -87,7 +88,7 @@ describe('Home', () => {
     act(() => { jest.advanceTimersByTime(1000) })
     expect(getDataPokemon).toHaveBeenCalledWith({ idOrName: ApiPokemonParams.name.toLocaleLowerCase() })
     expect(getDataPokemon).toHaveBeenCalledTimes(1)
-    await waitFor(() => screen.getByText('Guilherme Gonçalves Lisboa'))
+    await waitFor(() => screen.getByTestId('card-pokemon'))
   })
 
   it('should call ListPokemon if search is empty', async () => {
@@ -97,7 +98,7 @@ describe('Home', () => {
     act(() => { jest.advanceTimersByTime(1000) })
     expect(listPokemons).toHaveBeenCalledWith({ page: 0, perPage: 25 })
     expect(listPokemons).toHaveBeenCalledTimes(2)
-    await waitFor(() => screen.getByText('Guilherme Gonçalves Lisboa'))
+    await waitFor(() => screen.getByTestId('card-pokemon'))
   })
 
   it('should render EmptyListPokemon if search return error', async () => {
@@ -106,5 +107,6 @@ describe('Home', () => {
     populateField('search-field', 'any_value')
     act(() => { jest.advanceTimersByTime(1000) })
     expect(screen.getAllByTestId('emptyCardPokemon')).toBeTruthy()
+    await waitFor(() => screen.getAllByTestId('emptyCardPokemon'))
   })
 })
