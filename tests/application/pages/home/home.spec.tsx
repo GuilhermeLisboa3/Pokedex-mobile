@@ -4,16 +4,20 @@ import { ApiPokemonParams, populateField } from '@/tests/mocks'
 import React from 'react'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react-native'
 import { UnexpectedError } from '@/domain/errors'
+import { AccountContext } from '@/application/contexts'
 
 jest.useFakeTimers()
 
 describe('Home', () => {
   const listPokemons = jest.fn()
   const getDataPokemon = jest.fn()
+  const getSpy = jest.fn().mockResolvedValue(null)
 
   const makeSut = (): void => {
     render(
-      <Home listPokemons={listPokemons} getDataPokemon={getDataPokemon}/>
+      <AccountContext.Provider value={{ setCurrentAccount: jest.fn(), getCurrentAccount: getSpy }}>
+        <Home listPokemons={listPokemons} getDataPokemon={getDataPokemon}/>
+      </AccountContext.Provider>
     )
   }
 
