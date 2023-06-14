@@ -3,16 +3,20 @@ import { Pagination } from './components'
 import { Header, Footer, EmptyCardPokemon, Error, PokemonCardAnimation, LinkToTop } from '@/application/components'
 import { type GetDataPokemon, type ListPokemons } from '@/domain/use-cases/api-pokemon'
 import { type ApiPokemon } from '@/domain/models'
+import { AccountContext } from '@/application/contexts'
+import { type GetListFavoritePokemon } from '@/domain/use-cases/pokemon'
 
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState, useRef, useContext } from 'react'
 import { ScrollView, type NativeScrollEvent } from 'react-native'
 
 type Props = {
   listPokemons: ListPokemons
   getDataPokemon: GetDataPokemon
+  getListFavoritePokemon: GetListFavoritePokemon
 }
 
-export const Home: React.FC<Props> = ({ listPokemons, getDataPokemon }) => {
+export const Home: React.FC<Props> = ({ listPokemons, getDataPokemon, getListFavoritePokemon }) => {
+  const { getCurrentAccount } = useContext(AccountContext)
   const scrollRef = useRef<ScrollView>(null)
   const [listPokemon, setListPokemon] = useState<ApiPokemon[]>([])
   const [namePokemon, setNamePokemon] = useState<string | undefined>(undefined)
@@ -31,6 +35,11 @@ export const Home: React.FC<Props> = ({ listPokemons, getDataPokemon }) => {
   }
 
   useEffect(() => {
+    getCurrentAccount().then(result => {
+      if (result?.token) {
+        getListFavoritePokemon()
+      }
+    })
     setListPokemon([])
     listPokemons({ perPage, page: page * perPage })
       .then(result => {
