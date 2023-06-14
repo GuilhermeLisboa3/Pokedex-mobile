@@ -3,9 +3,27 @@ import { ApiPokemonParams } from '@/tests/mocks'
 import { CardAnimationContext } from '@/application/contexts'
 
 import React from 'react'
-import { render, screen } from '@testing-library/react-native'
+import { render, screen, fireEvent } from '@testing-library/react-native'
+
+jest.mock('react-native-reanimated', () => {
+  const View = require('react-native').View
+
+  return {
+    useSharedValue: jest.fn(),
+    withTiming: jest.fn(),
+    useAnimatedStyle: jest.fn(),
+    View
+  }
+})
 
 describe('PokemonCardAnimation', () => {
+  const useSharedValue = jest.spyOn(require('react-native-reanimated'), 'useSharedValue')
+  const value = { value: 0 }
+
+  beforeAll(() => {
+    useSharedValue.mockReturnValue(value)
+  })
+
   it('should load with correct initial state', () => {
     const cardPokemonOpen = jest.fn().mockResolvedValueOnce(true)
     render(
@@ -14,6 +32,19 @@ describe('PokemonCardAnimation', () => {
       </CardAnimationContext.Provider>
     )
 
-    expect(screen.getByText(ApiPokemonParams.types[0].type.name)).toBeTruthy()
+    expect(screen.getByTestId('card-pokemon')).toBeTruthy()
+  })
+
+  it('should render dataPokemon if click CardPokemon', async () => {
+    const cardPokemonOpen = jest.fn().mockResolvedValueOnce(true)
+    render(
+      <CardAnimationContext.Provider value={{ cardPokemonOpen, changeCardSize: jest.fn(), dataPokemonOpen: jest.fn() }}>
+        <PokemonCardAnimation pokemon={ApiPokemonParams}/>
+      </CardAnimationContext.Provider>
+    )
+
+    fireEvent.press(screen.getByTestId('card-pokemon'))
+
+    expect(await screen.findByTestId('close-data-pokemon')).toBeTruthy()
   })
 })

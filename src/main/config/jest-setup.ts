@@ -1,3 +1,4 @@
+import '@testing-library/jest-native/extend-expect'
 import 'react-native-gesture-handler/jestSetup'
 jest.mock('react-native-vector-icons', () => ({
   Feather: '',
@@ -23,7 +24,8 @@ jest.mock('react-native-reanimated', () => {
     set: jest.fn(),
     cond: jest.fn(),
     interpolate: jest.fn(),
-    useSharedValue: jest.fn(),
+    useSharedValue: jest.fn().mockImplementation(() => ({ value: 0 })),
+    withTiming: jest.fn(),
     useAnimatedStyle: jest.fn(),
     View,
     Extrapolate: { CLAMP: jest.fn() },
