@@ -1,5 +1,5 @@
 import { Home } from '@/application/pages/home'
-import { ApiPokemonParams, populateField } from '@/tests/mocks'
+import { ApiPokemonParams, populateField, AccountParams } from '@/tests/mocks'
 
 import React from 'react'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react-native'
@@ -11,7 +11,7 @@ jest.useFakeTimers()
 describe('Home', () => {
   const listPokemons = jest.fn()
   const getDataPokemon = jest.fn()
-  const getSpy = jest.fn().mockResolvedValue(null)
+  const getSpy = jest.fn()
   const getListFavoritePokemon = jest.fn()
 
   const makeSut = (): void => {
@@ -23,6 +23,7 @@ describe('Home', () => {
   }
 
   beforeAll(() => {
+    getSpy.mockResolvedValue(undefined)
     listPokemons.mockResolvedValue({ pokemons: [ApiPokemonParams], count: 10 })
     getDataPokemon.mockResolvedValue({ pokemon: ApiPokemonParams, description: 'any_description' })
   })
@@ -116,5 +117,16 @@ describe('Home', () => {
 
     expect(getListFavoritePokemon).not.toHaveBeenCalledWith()
     await waitFor(() => screen.getByTestId('card-pokemon'))
+  })
+
+  describe('test with token', () => {
+    const { name, email, token } = AccountParams
+    beforeAll(() => { getSpy.mockResolvedValue({ name, email, token }) })
+    it('should call GetListFavoritePokemon if has token', async () => {
+      makeSut()
+      await waitFor(() => screen.getAllByTestId('card-pokemon'))
+      expect(getListFavoritePokemon).toHaveBeenCalledWith()
+      expect(getListFavoritePokemon).toHaveBeenCalledTimes(1)
+    })
   })
 })
