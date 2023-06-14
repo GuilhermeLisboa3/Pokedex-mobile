@@ -12,11 +12,12 @@ describe('Home', () => {
   const listPokemons = jest.fn()
   const getDataPokemon = jest.fn()
   const getSpy = jest.fn().mockResolvedValue(null)
+  const getListFavoritePokemon = jest.fn()
 
   const makeSut = (): void => {
     render(
       <AccountContext.Provider value={{ setCurrentAccount: jest.fn(), getCurrentAccount: getSpy }}>
-        <Home listPokemons={listPokemons} getDataPokemon={getDataPokemon}/>
+        <Home listPokemons={listPokemons} getDataPokemon={getDataPokemon} getListFavoritePokemon={getListFavoritePokemon}/>
       </AccountContext.Provider>
     )
   }
@@ -108,5 +109,12 @@ describe('Home', () => {
     act(() => { jest.advanceTimersByTime(1000) })
     expect(screen.getAllByTestId('emptyCardPokemon')).toBeTruthy()
     await waitFor(() => screen.getAllByTestId('emptyCardPokemon'))
+  })
+
+  it('should not call GetListFavoritePokemon if it has no token', async () => {
+    makeSut()
+
+    expect(getListFavoritePokemon).not.toHaveBeenCalledWith()
+    await waitFor(() => screen.getByTestId('card-pokemon'))
   })
 })
