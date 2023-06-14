@@ -23,6 +23,8 @@ jest.mock('react-native-reanimated', () => {
     set: jest.fn(),
     cond: jest.fn(),
     interpolate: jest.fn(),
+    useSharedValue: jest.fn(),
+    useAnimatedStyle: jest.fn(),
     View,
     Extrapolate: { CLAMP: jest.fn() },
     Transition: {

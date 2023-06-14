@@ -7,7 +7,6 @@ module.exports = {
     '!<rootDir>/src/main/**',
     '!<rootDir>/src/**/index.ts',
     '!<rootDir>/src/application/layouts/**',
-    '!<rootDir>/src/application/components/pokemon-card-animation/**',
     '!<rootDir>/src/**/styles.ts'
   ],
   coverageDirectory: 'coverage',
