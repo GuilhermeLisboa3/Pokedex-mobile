@@ -1,6 +1,6 @@
 import { DataPokemon } from '@/application/components'
 import { ApiPokemonParams } from '@/tests/mocks'
-import { CardAnimationContext } from '@/application/contexts'
+import { CardAnimationContext, PokemonProvider } from '@/application/contexts'
 
 import React from 'react'
 import { fireEvent, render, screen } from '@testing-library/react-native'
@@ -8,27 +8,34 @@ import { fireEvent, render, screen } from '@testing-library/react-native'
 describe('DataPokemon', () => {
   it('should render one type and ability', () => {
     render(
-      <CardAnimationContext.Provider value={{ cardPokemonOpen: jest.fn(), changeCardSize: jest.fn(), dataPokemonOpen: jest.fn() }}>
-        <DataPokemon pokemon={ApiPokemonParams} description='any'/>
-      </CardAnimationContext.Provider>
+      <PokemonProvider listFavoritePokemon={[]}>
+        <CardAnimationContext.Provider value={{ cardPokemonOpen: jest.fn(), changeCardSize: jest.fn(), dataPokemonOpen: jest.fn() }}>
+          <DataPokemon pokemon={ApiPokemonParams}/>
+        </CardAnimationContext.Provider>
+      </PokemonProvider>
     )
 
+    expect(screen.getByTestId('icon-heart')).toBeTruthy()
     expect(screen.getByText(ApiPokemonParams.types[0].type.name)).toBeTruthy()
     expect(screen.getByText(ApiPokemonParams.abilities[0].ability.name)).toBeTruthy()
   })
 
   it('should render two type and ability', () => {
     render(
-      <CardAnimationContext.Provider value={{ cardPokemonOpen: jest.fn(), changeCardSize: jest.fn(), dataPokemonOpen: jest.fn() }}>
-        <DataPokemon pokemon={
-          {
-            ...ApiPokemonParams,
-            types: [{ type: { name: 'fire' } }, { type: { name: 'water' } }],
-            abilities: [{ ability: { name: 'static' } }, { ability: { name: 'bold' } }]
-          } } description='any'/>
-      </CardAnimationContext.Provider>
+      <PokemonProvider listFavoritePokemon={[{ idPokemon: '1' }]}>
+        <CardAnimationContext.Provider value={{ cardPokemonOpen: jest.fn(), changeCardSize: jest.fn(), dataPokemonOpen: jest.fn() }}>
+          <DataPokemon pokemon={
+            {
+              ...ApiPokemonParams,
+              id: '1',
+              types: [{ type: { name: 'fire' } }, { type: { name: 'water' } }],
+              abilities: [{ ability: { name: 'static' } }, { ability: { name: 'bold' } }]
+            } }/>
+        </CardAnimationContext.Provider>
+      </PokemonProvider>
     )
 
+    expect(screen.getByTestId('bg-icon-heart')).toBeTruthy()
     expect(screen.getByText('fire')).toBeTruthy()
     expect(screen.getByText('water')).toBeTruthy()
     expect(screen.getByText('static')).toBeTruthy()
@@ -36,14 +43,16 @@ describe('DataPokemon', () => {
   })
   it('should have first type style if not two types', () => {
     render(
-      <CardAnimationContext.Provider value={{ cardPokemonOpen: jest.fn(), changeCardSize: jest.fn(), dataPokemonOpen: jest.fn() }}>
-        <DataPokemon pokemon={
-          {
-            ...ApiPokemonParams,
-            types: [{ type: { name: 'fire' } }],
-            abilities: [{ ability: { name: 'static' } }, { ability: { name: 'bold' } }]
-          } } description='any'/>
-      </CardAnimationContext.Provider>
+      <PokemonProvider listFavoritePokemon={[]}>
+        <CardAnimationContext.Provider value={{ cardPokemonOpen: jest.fn(), changeCardSize: jest.fn(), dataPokemonOpen: jest.fn() }}>
+          <DataPokemon pokemon={
+            {
+              ...ApiPokemonParams,
+              types: [{ type: { name: 'fire' } }],
+              abilities: [{ ability: { name: 'static' } }, { ability: { name: 'bold' } }]
+            } }/>
+        </CardAnimationContext.Provider>
+      </PokemonProvider>
     )
 
     expect(screen.getByTestId('text-ability')).toHaveStyle({ color: '#793d13' })
@@ -55,9 +64,11 @@ describe('DataPokemon', () => {
     const changeCardSize = jest.fn()
     const dataPokemonOpen = jest.fn()
     render(
-    <CardAnimationContext.Provider value={{ cardPokemonOpen, changeCardSize, dataPokemonOpen }}>
-      <DataPokemon pokemon={ApiPokemonParams} description='any'/>
-    </CardAnimationContext.Provider>
+      <PokemonProvider listFavoritePokemon={[]}>
+        <CardAnimationContext.Provider value={{ cardPokemonOpen, changeCardSize, dataPokemonOpen }}>
+          <DataPokemon pokemon={ApiPokemonParams}/>
+        </CardAnimationContext.Provider>
+      </PokemonProvider>
     )
 
     fireEvent.press(screen.getByTestId('close-data-pokemon'))

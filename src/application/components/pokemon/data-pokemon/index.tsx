@@ -1,6 +1,6 @@
 import { Id, Name, TextType, Type, Types, Title } from '../styles'
 import { Icon, Icons, Image, Skills, Ability, TextAbility, Body, BodyData, BodyDataValue } from './styles'
-import { CardAnimationContext } from '@/application/contexts'
+import { CardAnimationContext, PokemonContext } from '@/application/contexts'
 import { StarsPokemon } from './components'
 import { type ApiPokemon } from '@/domain/models'
 
@@ -12,8 +12,10 @@ type Props = { pokemon: ApiPokemon }
 
 export const DataPokemon: React.FC<Props> = ({ pokemon }) => {
   const { cardPokemonOpen, changeCardSize, dataPokemonOpen } = useContext(CardAnimationContext)
+  const { pokemonFavorite } = useContext(PokemonContext)
   const typePokemon = (position: number): string => pokemon.types[position].type.name
   const abilityPokemon = (position: number): string => pokemon.abilities[position].ability.name
+  const isFavorite = pokemonFavorite(pokemon.id)
   return (
     <ScrollView>
       <Icons>
@@ -22,7 +24,13 @@ export const DataPokemon: React.FC<Props> = ({ pokemon }) => {
           cardPokemonOpen(true)
           changeCardSize(280, 180)
         }} testID='close-data-pokemon'><AntDesign name='close' size={30} color={'#fd4f55'}/></Icon>
-        <Icon><Feather name='heart' size={26} color={'#fd4f55'}/></Icon>
+        <Icon>
+          {
+            isFavorite
+              ? <AntDesign name="heart" size={20} color="#fd4f55" testID='bg-icon-heart'/>
+              : <Feather name='heart' size={20} color={'#fd4f55'} testID='icon-heart'/>
+          }
+        </Icon>
       </Icons>
       <Image source={{ uri: pokemon.sprites.front_default }} style={{ width: 200, height: 200 }}/>
       <Id size={25} marginTop={0}>Nº{pokemon.id}</Id>

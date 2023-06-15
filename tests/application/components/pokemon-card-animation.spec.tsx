@@ -1,6 +1,6 @@
 import { PokemonCardAnimation } from '@/application/components'
 import { ApiPokemonParams } from '@/tests/mocks'
-import { CardAnimationContext } from '@/application/contexts'
+import { CardAnimationContext, PokemonProvider } from '@/application/contexts'
 
 import React from 'react'
 import { render, screen, fireEvent } from '@testing-library/react-native'
@@ -27,9 +27,11 @@ describe('PokemonCardAnimation', () => {
   it('should load with correct initial state', () => {
     const cardPokemonOpen = jest.fn().mockResolvedValueOnce(true)
     render(
-      <CardAnimationContext.Provider value={{ cardPokemonOpen, changeCardSize: jest.fn(), dataPokemonOpen: jest.fn() }}>
-        <PokemonCardAnimation pokemon={ApiPokemonParams}/>
-      </CardAnimationContext.Provider>
+      <PokemonProvider listFavoritePokemon={[]}>
+        <CardAnimationContext.Provider value={{ cardPokemonOpen, changeCardSize: jest.fn(), dataPokemonOpen: jest.fn() }}>
+          <PokemonCardAnimation pokemon={ApiPokemonParams}/>
+        </CardAnimationContext.Provider>
+      </PokemonProvider>
     )
 
     expect(screen.getByTestId('card-pokemon')).toBeTruthy()
@@ -38,9 +40,11 @@ describe('PokemonCardAnimation', () => {
   it('should render dataPokemon if click CardPokemon', async () => {
     const cardPokemonOpen = jest.fn().mockResolvedValueOnce(true)
     render(
-      <CardAnimationContext.Provider value={{ cardPokemonOpen, changeCardSize: jest.fn(), dataPokemonOpen: jest.fn() }}>
-        <PokemonCardAnimation pokemon={ApiPokemonParams}/>
-      </CardAnimationContext.Provider>
+      <PokemonProvider listFavoritePokemon={[]}>
+        <CardAnimationContext.Provider value={{ cardPokemonOpen, changeCardSize: jest.fn(), dataPokemonOpen: jest.fn() }}>
+          <PokemonCardAnimation pokemon={ApiPokemonParams}/>
+        </CardAnimationContext.Provider>
+      </PokemonProvider>
     )
 
     fireEvent.press(screen.getByTestId('card-pokemon'))

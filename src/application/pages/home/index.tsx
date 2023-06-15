@@ -2,8 +2,8 @@ import { Container, Main, ListPokemon } from './styles'
 import { Pagination } from './components'
 import { Header, Footer, EmptyCardPokemon, Error, PokemonCardAnimation, LinkToTop } from '@/application/components'
 import { type GetDataPokemon, type ListPokemons } from '@/domain/use-cases/api-pokemon'
-import { type ApiPokemon } from '@/domain/models'
-import { AccountContext } from '@/application/contexts'
+import { type Pokemon, type ApiPokemon } from '@/domain/models'
+import { AccountContext, PokemonProvider } from '@/application/contexts'
 import { type GetListFavoritePokemon } from '@/domain/use-cases/pokemon'
 
 import React, { useEffect, useState, useRef, useContext } from 'react'
@@ -19,6 +19,7 @@ export const Home: React.FC<Props> = ({ listPokemons, getDataPokemon, getListFav
   const { getCurrentAccount } = useContext(AccountContext)
   const scrollRef = useRef<ScrollView>(null)
   const [listPokemon, setListPokemon] = useState<ApiPokemon[]>([])
+  const [listFavoritePokemon, setListFavoritePokemon] = useState<Pokemon[]>([])
   const [namePokemon, setNamePokemon] = useState<string | undefined>(undefined)
 
   const [eventScroll, setEventScroll] = useState<NativeScrollEvent>()
@@ -37,7 +38,7 @@ export const Home: React.FC<Props> = ({ listPokemons, getDataPokemon, getListFav
   useEffect(() => {
     getCurrentAccount().then(result => {
       if (result?.token) {
-        getListFavoritePokemon()
+        getListFavoritePokemon().then((result: Pokemon[]) => { setListFavoritePokemon(result) }).catch(() => { setListFavoritePokemon([]) })
       }
     })
     setListPokemon([])
@@ -68,7 +69,7 @@ export const Home: React.FC<Props> = ({ listPokemons, getDataPokemon, getListFav
   }
 
   return (
-  <>
+  <PokemonProvider listFavoritePokemon={listFavoritePokemon}>
     <ScrollView
     testID='scroll-home'
     contentContainerStyle={{ flexGrow: 1 }}
@@ -92,6 +93,6 @@ export const Home: React.FC<Props> = ({ listPokemons, getDataPokemon, getListFav
       </Container>
     </ScrollView>
     <LinkToTop eventScroll={eventScroll} scrollMoveTop={handlerScrollMoveTop}/>
-  </>
+  </PokemonProvider>
   )
 }

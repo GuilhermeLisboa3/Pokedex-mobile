@@ -4,7 +4,7 @@ import { ApiPokemonParams, populateField, AccountParams } from '@/tests/mocks'
 import React from 'react'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react-native'
 import { UnexpectedError } from '@/domain/errors'
-import { AccountContext } from '@/application/contexts'
+import { AccountContext, PokemonProvider } from '@/application/contexts'
 
 jest.useFakeTimers()
 
@@ -17,7 +17,9 @@ describe('Home', () => {
   const makeSut = (): void => {
     render(
       <AccountContext.Provider value={{ setCurrentAccount: jest.fn(), getCurrentAccount: getSpy }}>
-        <Home listPokemons={listPokemons} getDataPokemon={getDataPokemon} getListFavoritePokemon={getListFavoritePokemon}/>
+        <PokemonProvider listFavoritePokemon={[]}>
+          <Home listPokemons={listPokemons} getDataPokemon={getDataPokemon} getListFavoritePokemon={getListFavoritePokemon}/>
+        </PokemonProvider>
       </AccountContext.Provider>
     )
   }
@@ -26,6 +28,7 @@ describe('Home', () => {
     getSpy.mockResolvedValue(undefined)
     listPokemons.mockResolvedValue({ pokemons: [ApiPokemonParams], count: 10 })
     getDataPokemon.mockResolvedValue({ pokemon: ApiPokemonParams, description: 'any_description' })
+    getListFavoritePokemon.mockResolvedValue([{ idPokemon: '1' }])
   })
 
   it('should load with correct initial state', async () => {
