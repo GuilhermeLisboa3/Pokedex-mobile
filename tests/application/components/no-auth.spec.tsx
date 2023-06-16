@@ -27,4 +27,10 @@ describe('NoAuth', () => {
     fireEvent.press(screen.getByText('Entrar'))
     expect(navigation.navigate).toHaveBeenCalledWith('Login')
   })
+
+  it('should redirect to the SignUp screen if click on Registrar', async () => {
+    makeSut()
+    fireEvent.press(screen.getByText('Registrar'))
+    expect(navigation.navigate).toHaveBeenCalledWith('SignUp')
+  })
 })
