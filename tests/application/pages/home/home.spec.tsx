@@ -5,8 +5,19 @@ import React from 'react'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react-native'
 import { UnexpectedError } from '@/domain/errors'
 import { AccountContext, PokemonProvider } from '@/application/contexts'
+import { NavigationContext } from '@react-navigation/native'
 
 jest.useFakeTimers()
+
+const actualNav = jest.requireActual('@react-navigation/native')
+const navContext = {
+  ...actualNav.navigation,
+  navigate: () => {},
+  dangerouslyGetState: () => {},
+  setOptions: () => {},
+  addListener: () => () => {},
+  isFocused: () => true
+}
 
 describe('Home', () => {
   const listPokemons = jest.fn()
@@ -16,11 +27,13 @@ describe('Home', () => {
 
   const makeSut = (): void => {
     render(
-      <AccountContext.Provider value={{ setCurrentAccount: jest.fn(), getCurrentAccount: getSpy }}>
-        <PokemonProvider listFavoritePokemon={[]}>
-          <Home listPokemons={listPokemons} getDataPokemon={getDataPokemon} getListFavoritePokemon={getListFavoritePokemon}/>
-        </PokemonProvider>
-      </AccountContext.Provider>
+      <NavigationContext.Provider value={navContext}>
+        <AccountContext.Provider value={{ setCurrentAccount: jest.fn(), getCurrentAccount: getSpy }}>
+          <PokemonProvider listFavoritePokemon={[]}>
+            <Home listPokemons={listPokemons} getDataPokemon={getDataPokemon} getListFavoritePokemon={getListFavoritePokemon}/>
+          </PokemonProvider>
+        </AccountContext.Provider>
+      </NavigationContext.Provider>
     )
   }
 

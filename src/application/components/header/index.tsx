@@ -4,7 +4,8 @@ import logo from '@/application/assets/pokedexLogo.png'
 import { AccountContext } from '@/application/contexts'
 
 import { MaterialCommunityIcons } from '@expo/vector-icons'
-import { useState, useContext, useEffect } from 'react'
+import { useState, useContext, useCallback } from 'react'
+import { useFocusEffect } from '@react-navigation/native'
 
 type Props = {
   setNamePokemon: React.Dispatch<React.SetStateAction<string | undefined>>
@@ -13,7 +14,7 @@ type Props = {
 export const Header: React.FC<Props> = ({ setNamePokemon }) => {
   const [token, setToken] = useState<string | undefined>()
   const { getCurrentAccount } = useContext(AccountContext)
-  useEffect(() => { getCurrentAccount().then(account => { setToken(account?.token) }) }, [])
+  useFocusEffect(useCallback(() => { getCurrentAccount().then(account => { setToken(account?.token) }) }, []))
 
   const handlerChange = (name: string): void => {
     setTimeout(() => {

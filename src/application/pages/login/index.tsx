@@ -9,6 +9,7 @@ import logo from '@/application/assets/pokedexLogo.png'
 import React, { useState, useEffect, useContext } from 'react'
 import { useNavigation, type ParamListBase } from '@react-navigation/native'
 import { type StackNavigationProp } from '@react-navigation/stack'
+import { Pressable } from 'react-native'
 
 type Props = { validator: Validator, authentication: Authentication }
 
@@ -32,7 +33,7 @@ export const Login: React.FC<Props> = ({ validator, authentication }) => {
     setLodding(true)
     try {
       const account = await authentication({ email, password })
-      setCurrentAccount(account)
+      await setCurrentAccount(account)
       navigate('Home')
     } catch (error: any) {
       setToastMessage(error.message)
@@ -46,12 +47,14 @@ export const Login: React.FC<Props> = ({ validator, authentication }) => {
       <ContainerForm>
         <>
           <Title>Seja bem vindo(a) {'\n'} a Pokedex Pokemon</Title>
-          <Image source={logo} resizeMode='stretch'/>
+          <Pressable onPress={() => { navigate('Home') }}>
+            <Image source={logo} resizeMode='stretch'/>
+          </Pressable>
           <ContainerInputs>
             <Input setChange={setEmail} testID='email' isError={emailError} iconLeft iconNames={'mail'} iconSize={20} placeholder='Digite seu email'/>
             <Input setChange={setPassword} testID='password' isError={passwordError} iconLeft iconNames={'lock'} iconSize={20} placeholder='Digite sua senha' iconViewPassword setSecurity={setSecurity} security={security} secureTextEntry={security}/>
           </ContainerInputs>
-          <Button onSubmit={handleSubmit} width={150} height={40} text='Entrar' disabled={!!emailError || !!passwordError}/>
+          <Button onPress={handleSubmit} width={150} height={40} text='Entrar' disabled={!!emailError || !!passwordError}/>
           <TextLink>Você tem conta? <NavigationLink onPress={() => { navigate('SignUp') }}>Registrar</NavigationLink></TextLink>
         </>
       </ContainerForm>

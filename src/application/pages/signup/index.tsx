@@ -8,6 +8,7 @@ import logo from '@/application/assets/pokedexLogo.png'
 import React, { useEffect, useState } from 'react'
 import { useNavigation, type ParamListBase } from '@react-navigation/native'
 import { type StackNavigationProp } from '@react-navigation/stack'
+import { Pressable } from 'react-native'
 
 type Props = {
   validator: Validator
@@ -52,14 +53,16 @@ export const SignUp: React.FC<Props> = ({ validator, addAccount }) => {
     <ContainerForm>
       <>
         <Title>Seja bem vindo(a) {'\n'} a Pokedex Pokemon</Title>
-        <Image source={logo} resizeMode='stretch'/>
+        <Pressable onPress={() => { navigate('Home') }}>
+          <Image source={logo} resizeMode='stretch'/>
+        </Pressable>
         <ContainerInputs>
           <Input setChange={setName} testID='name' isError={nameError} iconLeft iconNames={'user'} iconSize={20} placeholder='Digite seu nome'/>
           <Input setChange={setEmail} testID='email' isError={emailError} iconLeft iconNames={'mail'} iconSize={20} placeholder='Digite seu email'/>
           <Input security={ security} setSecurity={setSecurity} setChange={setPassword} testID='password' isError={passwordError} iconLeft iconNames={'lock'} iconSize={20} placeholder='Digite sua senha' iconViewPassword secureTextEntry={security}/>
           <Input security={ security} setSecurity={setSecurity} setChange={setPasswordConfirmation} testID='passwordConfirmation' isError={passwordConfirmationError} iconLeft iconNames={'lock'} iconSize={20} placeholder='Confirme sua senha' iconViewPassword secureTextEntry={security}/>
         </ContainerInputs>
-        <Button onSubmit={handleSubmit} width={150} height={40} text='Registrar' disabled={!!nameError || !!emailError || !!passwordError || !!passwordConfirmationError}/>
+        <Button onPress={handleSubmit} width={150} height={40} text='Registrar' disabled={!!nameError || !!emailError || !!passwordError || !!passwordConfirmationError}/>
         <TextLink>Você tem conta? <NavigationLink onPress={() => { navigate('Login') }}>Entrar</NavigationLink></TextLink>
       </>
     </ContainerForm>

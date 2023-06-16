@@ -2,7 +2,7 @@ import { type Account } from '@/domain/models'
 import { createContext } from 'react'
 
 type Props = {
-  setCurrentAccount: (account: Account) => void
+  setCurrentAccount: (account: Account) => Promise<void>
   getCurrentAccount: () => Promise<Account>
 }
 

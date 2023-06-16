@@ -6,8 +6,9 @@ import { type Pokemon, type ApiPokemon } from '@/domain/models'
 import { AccountContext, PokemonProvider } from '@/application/contexts'
 import { type GetListFavoritePokemon } from '@/domain/use-cases/pokemon'
 
-import React, { useEffect, useState, useRef, useContext } from 'react'
+import React, { useCallback, useState, useRef, useContext, useEffect } from 'react'
 import { ScrollView, type NativeScrollEvent } from 'react-native'
+import { useFocusEffect } from '@react-navigation/native'
 
 type Props = {
   listPokemons: ListPokemons
@@ -35,7 +36,8 @@ export const Home: React.FC<Props> = ({ listPokemons, getDataPokemon, getListFav
     setReload(!reload)
   }
 
-  useEffect(() => {
+  useFocusEffect(useCallback(() => {
+    setListFavoritePokemon([])
     getCurrentAccount().then(result => {
       if (result?.token) {
         getListFavoritePokemon().then((result: Pokemon[]) => { setListFavoritePokemon(result) }).catch(() => { setListFavoritePokemon([]) })
@@ -48,7 +50,7 @@ export const Home: React.FC<Props> = ({ listPokemons, getDataPokemon, getListFav
         setCount(result.count)
       })
       .catch(error => { setError(error.message) })
-  }, [page, reload])
+  }, [page, reload]))
 
   useEffect(() => { searchPokemon(namePokemon) }, [namePokemon])
 
