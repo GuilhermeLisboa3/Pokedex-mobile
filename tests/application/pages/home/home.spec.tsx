@@ -136,6 +136,16 @@ describe('Home', () => {
     await waitFor(() => screen.getByTestId('card-pokemon'))
   })
 
+  it('should show the toas if you click on the heart and has no token', async () => {
+    makeSut()
+    await waitFor(() => screen.getAllByTestId('card-pokemon'))
+    fireEvent.press(screen.getByTestId('icon-heart'))
+
+    expect(addPokemon).not.toHaveBeenCalled()
+    expect(await screen.findByTestId('toast')).toBeTruthy()
+    await waitFor(() => screen.getAllByTestId('card-pokemon'))
+  })
+
   describe('test with token', () => {
     const { name, email, token } = AccountParams
     beforeAll(() => { getSpy.mockResolvedValue({ name, email, token }) })
