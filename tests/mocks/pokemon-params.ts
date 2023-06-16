@@ -19,3 +19,5 @@ export const ApiPokemonParams = {
     { base_stat: 100 }
   ]
 }
+
+export const PokemonParams = { idPokemon: faker.datatype.uuid() }
