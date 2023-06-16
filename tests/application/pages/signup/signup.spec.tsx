@@ -125,6 +125,12 @@ describe('SignUp', () => {
     expect(screen.getByTestId('toast')).toBeTruthy()
   })
 
+  it('should redirect to the Home screen if click on image', async () => {
+    makeSut()
+    fireEvent.press(screen.getByTestId('logo'))
+    expect(navigation.navigate).toHaveBeenCalledWith('Home')
+  })
+
   it('should redirect to the Login screen if click on the link', async () => {
     makeSut()
     fireEvent.press(screen.getByText('Entrar'))
