@@ -144,5 +144,13 @@ describe('Home', () => {
       expect(getListFavoritePokemon).toHaveBeenCalledWith()
       expect(getListFavoritePokemon).toHaveBeenCalledTimes(1)
     })
+
+    it('should return array empty if GetListFavoritePokemon returns AccessDeniedError', async () => {
+      getListFavoritePokemon.mockRejectedValueOnce(new Error())
+      makeSut()
+
+      await waitFor(() => screen.getAllByTestId('card-pokemon'))
+      expect(screen.getByTestId('icon-heart')).toBeTruthy()
+    })
   })
 })
