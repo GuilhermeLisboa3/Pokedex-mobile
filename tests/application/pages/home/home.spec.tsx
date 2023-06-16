@@ -24,13 +24,14 @@ describe('Home', () => {
   const getDataPokemon = jest.fn()
   const getSpy = jest.fn()
   const getListFavoritePokemon = jest.fn()
+  const addPokemon = jest.fn()
 
   const makeSut = (): void => {
     render(
       <NavigationContext.Provider value={navContext}>
         <AccountContext.Provider value={{ setCurrentAccount: jest.fn(), getCurrentAccount: getSpy }}>
-          <PokemonProvider listFavoritePokemon={[]}>
-            <Home listPokemons={listPokemons} getDataPokemon={getDataPokemon} getListFavoritePokemon={getListFavoritePokemon}/>
+          <PokemonProvider listFavoritePokemon={[]} addPokemon={jest.fn()}>
+            <Home listPokemons={listPokemons} getDataPokemon={getDataPokemon} getListFavoritePokemon={getListFavoritePokemon} addPokemon={addPokemon}/>
           </PokemonProvider>
         </AccountContext.Provider>
       </NavigationContext.Provider>
@@ -151,6 +152,16 @@ describe('Home', () => {
 
       await waitFor(() => screen.getAllByTestId('card-pokemon'))
       expect(screen.getByTestId('icon-heart')).toBeTruthy()
+    })
+
+    it('should call AddPokemon if click icon heart', async () => {
+      makeSut()
+      await waitFor(() => screen.getAllByTestId('card-pokemon'))
+      fireEvent.press(screen.getByTestId('icon-heart'))
+
+      expect(addPokemon).toHaveBeenCalledWith({ idPokemon: ApiPokemonParams.id })
+      expect(addPokemon).toHaveBeenCalledTimes(1)
+      await waitFor(() => screen.getAllByTestId('card-pokemon'))
     })
   })
 })
