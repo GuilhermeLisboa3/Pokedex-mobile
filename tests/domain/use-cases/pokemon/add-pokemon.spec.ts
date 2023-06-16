@@ -40,4 +40,10 @@ describe('AddPokemonUseCase', () => {
 
     await expect(promise).rejects.toThrow(new UnexpectedError())
   })
+
+  it('should return true if HttpClient return 200', async () => {
+    const result = await sut(PokemonParams)
+
+    expect(result).toBeTruthy()
+  })
 })
