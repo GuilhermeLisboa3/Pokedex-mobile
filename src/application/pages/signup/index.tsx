@@ -53,7 +53,7 @@ export const SignUp: React.FC<Props> = ({ validator, addAccount }) => {
     <ContainerForm>
       <>
         <Title>Seja bem vindo(a) {'\n'} a Pokedex Pokemon</Title>
-        <Pressable onPress={() => { navigate('Home') }}>
+        <Pressable onPress={() => { navigate('Home') }} testID='logo'>
           <Image source={logo} resizeMode='stretch'/>
         </Pressable>
         <ContainerInputs>
