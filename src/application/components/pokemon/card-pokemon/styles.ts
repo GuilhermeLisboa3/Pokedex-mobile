@@ -5,7 +5,7 @@ export const Container = styled.Pressable`
   position: relative;
 `
 
-export const IconContainer = styled.View`
+export const IconContainer = styled.Pressable`
   position: absolute;
   background-color: transparent;
   top: 10px;

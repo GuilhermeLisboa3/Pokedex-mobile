@@ -12,7 +12,7 @@ type Props = { pokemon: ApiPokemon }
 
 export const DataPokemon: React.FC<Props> = ({ pokemon }) => {
   const { cardPokemonOpen, changeCardSize, dataPokemonOpen } = useContext(CardAnimationContext)
-  const { pokemonFavorite } = useContext(PokemonContext)
+  const { pokemonFavorite, addPokemon } = useContext(PokemonContext)
   const typePokemon = (position: number): string => pokemon.types[position].type.name
   const abilityPokemon = (position: number): string => pokemon.abilities[position].ability.name
   const isFavorite = pokemonFavorite(pokemon.id)
@@ -24,7 +24,9 @@ export const DataPokemon: React.FC<Props> = ({ pokemon }) => {
           cardPokemonOpen(true)
           changeCardSize(280, 180)
         }} testID='close-data-pokemon'><AntDesign name='close' size={30} color={'#fd4f55'}/></Icon>
-        <Icon>
+        <Icon onPress={() => {
+          if (addPokemon) addPokemon(pokemon)
+        }}>
           {
             isFavorite
               ? <AntDesign name="heart" size={20} color="#fd4f55" testID='bg-icon-heart'/>

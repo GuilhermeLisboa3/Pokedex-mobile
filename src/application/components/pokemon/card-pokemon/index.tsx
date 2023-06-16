@@ -12,7 +12,7 @@ type Props = {
 
 export const CardPokemon: React.FC<Props> = ({ pokemon }) => {
   const { cardPokemonOpen, changeCardSize, dataPokemonOpen } = useContext(CardAnimationContext)
-  const { pokemonFavorite } = useContext(PokemonContext)
+  const { pokemonFavorite, addPokemon } = useContext(PokemonContext)
   const isFavorite = pokemonFavorite(pokemon.id)
   const typePokemon = (position: number): string => pokemon.types[position].type.name
   return (
@@ -24,7 +24,9 @@ export const CardPokemon: React.FC<Props> = ({ pokemon }) => {
       dataPokemonOpen(true)
       changeCardSize(380, 800)
     }}>
-      <IconContainer>
+      <IconContainer onPress={() => {
+        if (addPokemon) addPokemon(pokemon)
+      }}>
         {
           isFavorite
             ? <AntDesign name="heart" size={20} color="#fd4f55" testID='bg-icon-heart'/>

@@ -4,7 +4,7 @@ import { Header, Footer, EmptyCardPokemon, Error, PokemonCardAnimation, LinkToTo
 import { type GetDataPokemon, type ListPokemons } from '@/domain/use-cases/api-pokemon'
 import { type Pokemon, type ApiPokemon } from '@/domain/models'
 import { AccountContext, PokemonProvider } from '@/application/contexts'
-import { type GetListFavoritePokemon } from '@/domain/use-cases/pokemon'
+import { type AddPokemon, type GetListFavoritePokemon } from '@/domain/use-cases/pokemon'
 
 import React, { useCallback, useState, useRef, useContext, useEffect } from 'react'
 import { ScrollView, type NativeScrollEvent } from 'react-native'
@@ -14,9 +14,10 @@ type Props = {
   listPokemons: ListPokemons
   getDataPokemon: GetDataPokemon
   getListFavoritePokemon: GetListFavoritePokemon
+  addPokemon: AddPokemon
 }
 
-export const Home: React.FC<Props> = ({ listPokemons, getDataPokemon, getListFavoritePokemon }) => {
+export const Home: React.FC<Props> = ({ listPokemons, getDataPokemon, getListFavoritePokemon, addPokemon }) => {
   const { getCurrentAccount } = useContext(AccountContext)
   const scrollRef = useRef<ScrollView>(null)
   const [listPokemon, setListPokemon] = useState<ApiPokemon[]>([])
@@ -70,8 +71,15 @@ export const Home: React.FC<Props> = ({ listPokemons, getDataPokemon, getListFav
     }
   }
 
+  const handlerAddPokemon = async (pokemon: ApiPokemon): Promise<void> => {
+    try {
+      await addPokemon({ idPokemon: pokemon.id.toString() })
+      setListFavoritePokemon([...listFavoritePokemon, { idPokemon: pokemon.id.toString() }])
+    } catch (error) { }
+  }
+
   return (
-  <PokemonProvider listFavoritePokemon={listFavoritePokemon}>
+  <PokemonProvider listFavoritePokemon={listFavoritePokemon} addPokemon={handlerAddPokemon}>
     <ScrollView
     testID='scroll-home'
     contentContainerStyle={{ flexGrow: 1 }}
