@@ -136,6 +136,12 @@ describe('Login', () => {
     expect(setCurrentAccountMock).toHaveBeenCalledWith({ name, email, token })
   })
 
+  it('should redirect to the Home screen if click on image', async () => {
+    makeSut()
+    fireEvent.press(screen.getByTestId('logo'))
+    expect(navigation.navigate).toHaveBeenCalledWith('Home')
+  })
+
   it('should redirect to the SignUp screen if click on the link', async () => {
     makeSut()
     fireEvent.press(screen.getByText('Registrar'))
