@@ -1,6 +1,6 @@
 import { Container, Main, ListPokemon } from './styles'
 import { Pagination } from './components'
-import { Header, Footer, EmptyCardPokemon, Error, PokemonCardAnimation, LinkToTop } from '@/application/components'
+import { Header, Footer, EmptyCardPokemon, Error, PokemonCardAnimation, LinkToTop, Toast } from '@/application/components'
 import { type GetDataPokemon, type ListPokemons } from '@/domain/use-cases/api-pokemon'
 import { type Pokemon, type ApiPokemon } from '@/domain/models'
 import { AccountContext, PokemonProvider } from '@/application/contexts'
@@ -25,6 +25,8 @@ export const Home: React.FC<Props> = ({ listPokemons, getDataPokemon, getListFav
   const [namePokemon, setNamePokemon] = useState<string | undefined>(undefined)
 
   const [eventScroll, setEventScroll] = useState<NativeScrollEvent>()
+  const [toastIsOpen, setToastIsOpen] = useState(false)
+  const [token, setToken] = useState<string | undefined>()
 
   const perPage = 25
   const [page, setPage] = useState(0)
@@ -40,6 +42,7 @@ export const Home: React.FC<Props> = ({ listPokemons, getDataPokemon, getListFav
   useFocusEffect(useCallback(() => {
     setListFavoritePokemon([])
     getCurrentAccount().then(result => {
+      setToken(result?.token)
       if (result?.token) {
         getListFavoritePokemon().then((result: Pokemon[]) => { setListFavoritePokemon(result) }).catch(() => { setListFavoritePokemon([]) })
       }
@@ -72,6 +75,10 @@ export const Home: React.FC<Props> = ({ listPokemons, getDataPokemon, getListFav
   }
 
   const handlerAddPokemon = async (pokemon: ApiPokemon): Promise<void> => {
+    if (!token) {
+      setToastIsOpen(true)
+      return
+    }
     try {
       await addPokemon({ idPokemon: pokemon.id.toString() })
       setListFavoritePokemon([...listFavoritePokemon, { idPokemon: pokemon.id.toString() }])
@@ -103,6 +110,7 @@ export const Home: React.FC<Props> = ({ listPokemons, getDataPokemon, getListFav
       </Container>
     </ScrollView>
     <LinkToTop eventScroll={eventScroll} scrollMoveTop={handlerScrollMoveTop}/>
+    { toastIsOpen ? <Toast color='error' setIsOpen={setToastIsOpen} message='Faça login para conseguir favoritar um pokemon'/> : '' }
   </PokemonProvider>
   )
 }
