@@ -8,7 +8,7 @@ import { fireEvent, render, screen } from '@testing-library/react-native'
 describe('DataPokemon', () => {
   it('should render one type and ability', () => {
     render(
-      <PokemonProvider listFavoritePokemon={[]}>
+      <PokemonProvider listFavoritePokemon={[]} deletePokemon={jest.fn()}>
         <CardAnimationContext.Provider value={{ cardPokemonOpen: jest.fn(), changeCardSize: jest.fn(), dataPokemonOpen: jest.fn() }}>
           <DataPokemon pokemon={ApiPokemonParams}/>
         </CardAnimationContext.Provider>
@@ -22,7 +22,7 @@ describe('DataPokemon', () => {
 
   it('should render two type and ability', () => {
     render(
-      <PokemonProvider listFavoritePokemon={[{ idPokemon: '1' }]}>
+      <PokemonProvider listFavoritePokemon={[{ idPokemon: '1' }]} deletePokemon={jest.fn()}>
         <CardAnimationContext.Provider value={{ cardPokemonOpen: jest.fn(), changeCardSize: jest.fn(), dataPokemonOpen: jest.fn() }}>
           <DataPokemon pokemon={
             {
@@ -43,7 +43,7 @@ describe('DataPokemon', () => {
   })
   it('should have first type style if not two types', () => {
     render(
-      <PokemonProvider listFavoritePokemon={[]}>
+      <PokemonProvider listFavoritePokemon={[]} deletePokemon={jest.fn()}>
         <CardAnimationContext.Provider value={{ cardPokemonOpen: jest.fn(), changeCardSize: jest.fn(), dataPokemonOpen: jest.fn() }}>
           <DataPokemon pokemon={
             {
@@ -65,7 +65,7 @@ describe('DataPokemon', () => {
     const dataPokemonOpen = jest.fn()
     const addPokemon = jest.fn()
     render(
-      <PokemonProvider listFavoritePokemon={[]}>
+      <PokemonProvider listFavoritePokemon={[]} deletePokemon={jest.fn()}>
         <CardAnimationContext.Provider value={{ cardPokemonOpen, changeCardSize, dataPokemonOpen }}>
           <DataPokemon pokemon={ApiPokemonParams}/>
         </CardAnimationContext.Provider>
@@ -83,7 +83,7 @@ describe('DataPokemon', () => {
   it('should call addPokemon if click heart', () => {
     const addPokemon = jest.fn()
     render(
-      <PokemonProvider listFavoritePokemon={[]} addPokemon={addPokemon}>
+      <PokemonProvider listFavoritePokemon={[]} addPokemon={addPokemon} deletePokemon={jest.fn()}>
         <CardAnimationContext.Provider value={{ cardPokemonOpen: jest.fn(), changeCardSize: jest.fn(), dataPokemonOpen: jest.fn() }}>
           <DataPokemon pokemon={ApiPokemonParams}/>
         </CardAnimationContext.Provider>

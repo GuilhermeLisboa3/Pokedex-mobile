@@ -25,13 +25,14 @@ describe('Home', () => {
   const getSpy = jest.fn()
   const getListFavoritePokemon = jest.fn()
   const addPokemon = jest.fn()
+  const deletePokemon = jest.fn()
 
   const makeSut = (): void => {
     render(
       <NavigationContext.Provider value={navContext}>
         <AccountContext.Provider value={{ setCurrentAccount: jest.fn(), getCurrentAccount: getSpy }}>
-          <PokemonProvider listFavoritePokemon={[]} addPokemon={jest.fn()}>
-            <Home listPokemons={listPokemons} getDataPokemon={getDataPokemon} getListFavoritePokemon={getListFavoritePokemon} addPokemon={addPokemon}/>
+          <PokemonProvider listFavoritePokemon={[{ idPokemon: '1' }]} addPokemon={jest.fn()} deletePokemon={jest.fn()}>
+            <Home deletePokemon={deletePokemon} listPokemons={listPokemons} getDataPokemon={getDataPokemon} getListFavoritePokemon={getListFavoritePokemon} addPokemon={addPokemon}/>
           </PokemonProvider>
         </AccountContext.Provider>
       </NavigationContext.Provider>
@@ -40,7 +41,7 @@ describe('Home', () => {
 
   beforeAll(() => {
     getSpy.mockResolvedValue(undefined)
-    listPokemons.mockResolvedValue({ pokemons: [ApiPokemonParams], count: 10 })
+    listPokemons.mockResolvedValue({ pokemons: [ApiPokemonParams, { ...ApiPokemonParams, id: '1' }], count: 10 })
     getDataPokemon.mockResolvedValue({ pokemon: ApiPokemonParams, description: 'any_description' })
     getListFavoritePokemon.mockResolvedValue([{ idPokemon: '1' }])
   })
@@ -58,7 +59,7 @@ describe('Home', () => {
     makeSut()
     expect(listPokemons).toHaveBeenCalledWith({ page: 0, perPage: 25 })
     expect(listPokemons).toHaveBeenCalledTimes(1)
-    await waitFor(() => screen.getByTestId('card-pokemon'))
+    await waitFor(() => screen.getAllByTestId('card-pokemon'))
   })
 
   it('should render Error if ListPokemons return error', async () => {
@@ -74,7 +75,7 @@ describe('Home', () => {
 
     expect(listPokemons).toHaveBeenCalledWith({ page: 0, perPage: 25 })
     expect(listPokemons).toHaveBeenCalledTimes(2)
-    await waitFor(() => screen.getByTestId('card-pokemon'))
+    await waitFor(() => screen.getAllByTestId('card-pokemon'))
   })
 
   it('should call ListPokemons if click on link', async () => {
@@ -83,7 +84,7 @@ describe('Home', () => {
 
     expect(listPokemons).toHaveBeenCalledWith({ page: 25, perPage: 25 })
     expect(listPokemons).toHaveBeenCalledTimes(2)
-    await waitFor(() => screen.getByTestId('card-pokemon'))
+    await waitFor(() => screen.getAllByTestId('card-pokemon'))
   })
 
   it('should show LinkToTop if scroll view', async () => {
@@ -107,7 +108,7 @@ describe('Home', () => {
     act(() => { jest.advanceTimersByTime(1000) })
     expect(getDataPokemon).toHaveBeenCalledWith({ idOrName: ApiPokemonParams.name.toLocaleLowerCase() })
     expect(getDataPokemon).toHaveBeenCalledTimes(1)
-    await waitFor(() => screen.getByTestId('card-pokemon'))
+    await waitFor(() => screen.getAllByTestId('card-pokemon'))
   })
 
   it('should call ListPokemon if search is empty', async () => {
@@ -117,7 +118,7 @@ describe('Home', () => {
     act(() => { jest.advanceTimersByTime(1000) })
     expect(listPokemons).toHaveBeenCalledWith({ page: 0, perPage: 25 })
     expect(listPokemons).toHaveBeenCalledTimes(2)
-    await waitFor(() => screen.getByTestId('card-pokemon'))
+    await waitFor(() => screen.getAllByTestId('card-pokemon'))
   })
 
   it('should render EmptyListPokemon if search return error', async () => {
@@ -133,13 +134,13 @@ describe('Home', () => {
     makeSut()
 
     expect(getListFavoritePokemon).not.toHaveBeenCalledWith()
-    await waitFor(() => screen.getByTestId('card-pokemon'))
+    await waitFor(() => screen.getAllByTestId('card-pokemon'))
   })
 
   it('should show the toas if you click on the heart and has no token', async () => {
     makeSut()
     await waitFor(() => screen.getAllByTestId('card-pokemon'))
-    fireEvent.press(screen.getByTestId('icon-heart'))
+    fireEvent.press(screen.getAllByTestId('icon-heart')[0])
 
     expect(addPokemon).not.toHaveBeenCalled()
     expect(await screen.findByTestId('toast')).toBeTruthy()
@@ -161,7 +162,7 @@ describe('Home', () => {
       makeSut()
 
       await waitFor(() => screen.getAllByTestId('card-pokemon'))
-      expect(screen.getByTestId('icon-heart')).toBeTruthy()
+      expect(screen.getAllByTestId('icon-heart')[0]).toBeTruthy()
     })
 
     it('should call AddPokemon if click icon heart', async () => {
@@ -171,6 +172,16 @@ describe('Home', () => {
 
       expect(addPokemon).toHaveBeenCalledWith({ idPokemon: ApiPokemonParams.id })
       expect(addPokemon).toHaveBeenCalledTimes(1)
+      await waitFor(() => screen.getAllByTestId('card-pokemon'))
+    })
+
+    it('should call DeletePokemon if click icon heart red', async () => {
+      makeSut()
+      await waitFor(() => screen.getAllByTestId('card-pokemon'))
+      fireEvent.press(screen.getByTestId('bg-icon-heart'))
+
+      expect(deletePokemon).toHaveBeenCalledWith({ idPokemon: '1' })
+      expect(deletePokemon).toHaveBeenCalledTimes(1)
       await waitFor(() => screen.getAllByTestId('card-pokemon'))
     })
   })
