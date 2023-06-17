@@ -18,34 +18,31 @@ jest.mock('react-native-reanimated', () => {
 
 describe('PokemonCardAnimation', () => {
   const useSharedValue = jest.spyOn(require('react-native-reanimated'), 'useSharedValue')
+  const cardPokemonOpen = jest.fn().mockResolvedValue(true)
   const value = { value: 0 }
+
+  const makeSut = (): void => {
+    render(
+      <PokemonProvider listFavoritePokemon={[]} deletePokemon={jest.fn()} addPokemon={jest.fn()}>
+        <CardAnimationContext.Provider value={{ cardPokemonOpen, changeCardSize: jest.fn(), dataPokemonOpen: jest.fn() }}>
+          <PokemonCardAnimation pokemon={ApiPokemonParams}/>
+        </CardAnimationContext.Provider>
+      </PokemonProvider>
+    )
+  }
 
   beforeAll(() => {
     useSharedValue.mockReturnValue(value)
   })
 
   it('should load with correct initial state', () => {
-    const cardPokemonOpen = jest.fn().mockResolvedValueOnce(true)
-    render(
-      <PokemonProvider listFavoritePokemon={[]}>
-        <CardAnimationContext.Provider value={{ cardPokemonOpen, changeCardSize: jest.fn(), dataPokemonOpen: jest.fn() }}>
-          <PokemonCardAnimation pokemon={ApiPokemonParams}/>
-        </CardAnimationContext.Provider>
-      </PokemonProvider>
-    )
+    makeSut()
 
     expect(screen.getByTestId('card-pokemon')).toBeTruthy()
   })
 
   it('should render dataPokemon if click CardPokemon', async () => {
-    const cardPokemonOpen = jest.fn().mockResolvedValueOnce(true)
-    render(
-      <PokemonProvider listFavoritePokemon={[]}>
-        <CardAnimationContext.Provider value={{ cardPokemonOpen, changeCardSize: jest.fn(), dataPokemonOpen: jest.fn() }}>
-          <PokemonCardAnimation pokemon={ApiPokemonParams}/>
-        </CardAnimationContext.Provider>
-      </PokemonProvider>
-    )
+    makeSut()
 
     fireEvent.press(screen.getByTestId('card-pokemon'))
 

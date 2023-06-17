@@ -35,4 +35,10 @@ describe('Auth', () => {
     fireEvent.press(screen.getAllByTestId('auth-link')[0])
     expect(setSpy).toHaveBeenCalledWith(undefined)
   })
+
+  it('should redirect to the Favorite screen if click on icon heart', async () => {
+    makeSut()
+    fireEvent.press(screen.getAllByTestId('auth-link')[1])
+    expect(navigation.navigate).toHaveBeenCalledWith('Favorite')
+  })
 })
