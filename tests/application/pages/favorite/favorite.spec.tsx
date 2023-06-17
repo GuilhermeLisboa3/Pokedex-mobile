@@ -84,4 +84,15 @@ describe('Favorite', () => {
     await waitFor(() => screen.getByText('Tentar novamente'))
     expect(screen.getByText('Tentar novamente')).toBeTruthy()
   })
+
+  it('should call GetListFavoritePokemon on reload', async () => {
+    getListFavoritePokemon.mockRejectedValueOnce(new Error('error'))
+    makeSut()
+    await waitFor(() => screen.getByText('Tentar novamente'))
+    fireEvent.press(screen.getByText('Tentar novamente'))
+
+    expect(getListFavoritePokemon).toHaveBeenCalled()
+    expect(getListFavoritePokemon).toHaveBeenCalledTimes(2)
+    await waitFor(() => screen.getAllByTestId('card-pokemon'))
+  })
 })
