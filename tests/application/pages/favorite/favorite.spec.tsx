@@ -51,4 +51,11 @@ describe('Favorite', () => {
     expect(getDataPokemon).toHaveBeenCalledWith({ idOrName: '1' })
     expect(getDataPokemon).toHaveBeenCalledTimes(1)
   })
+
+  it('should render CardPokemon on success', async () => {
+    makeSut()
+    await waitFor(() => screen.getByTestId('card-pokemon'))
+
+    expect(screen.getAllByTestId('card-pokemon')).toHaveLength(1)
+  })
 })
