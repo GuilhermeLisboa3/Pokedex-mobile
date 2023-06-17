@@ -1,7 +1,8 @@
 import { Favorite } from '@/application/pages/favorite'
+import { ApiPokemonParams } from '@/tests/mocks'
 
 import React from 'react'
-import { render } from '@testing-library/react-native'
+import { render, screen, waitFor } from '@testing-library/react-native'
 import { AccountContext, PokemonProvider } from '@/application/contexts'
 import { NavigationContext } from '@react-navigation/native'
 
@@ -17,13 +18,14 @@ const navContext = {
 
 describe('Favorite', () => {
   const getListFavoritePokemon = jest.fn()
+  const getDataPokemon = jest.fn()
 
   const makeSut = (): void => {
     render(
       <NavigationContext.Provider value={navContext}>
         <AccountContext.Provider value={{ setCurrentAccount: jest.fn(), getCurrentAccount: jest.fn() }}>
           <PokemonProvider listFavoritePokemon={[{ idPokemon: '1' }]} addPokemon={jest.fn()} deletePokemon={jest.fn()}>
-            <Favorite getListFavoritePokemon={getListFavoritePokemon}/>
+            <Favorite getListFavoritePokemon={getListFavoritePokemon} getDataPokemon={getDataPokemon}/>
           </PokemonProvider>
         </AccountContext.Provider>
       </NavigationContext.Provider>
@@ -32,6 +34,7 @@ describe('Favorite', () => {
 
   beforeAll(() => {
     getListFavoritePokemon.mockResolvedValue([{ idPokemon: '1' }])
+    getDataPokemon.mockResolvedValue({ pokemon: { ...ApiPokemonParams, id: '1' }, description: 'any_description' })
   })
 
   it('should call GetListFavoritePokemon', async () => {
@@ -39,5 +42,13 @@ describe('Favorite', () => {
 
     expect(getListFavoritePokemon).toHaveBeenCalled()
     expect(getListFavoritePokemon).toHaveBeenCalledTimes(1)
+    await waitFor(() => screen.getByTestId('scroll-home'))
+  })
+
+  it('should call GetDataPokemon with correct value', async () => {
+    makeSut()
+    await waitFor(() => screen.getAllByTestId('card-pokemon'))
+    expect(getDataPokemon).toHaveBeenCalledWith({ idOrName: '1' })
+    expect(getDataPokemon).toHaveBeenCalledTimes(1)
   })
 })
