@@ -4,7 +4,7 @@ import { Header, Footer, EmptyCardPokemon, Error, PokemonCardAnimation, LinkToTo
 import { type GetDataPokemon, type ListPokemons } from '@/domain/use-cases/api-pokemon'
 import { type Pokemon, type ApiPokemon } from '@/domain/models'
 import { AccountContext, PokemonProvider } from '@/application/contexts'
-import { type AddPokemon, type GetListFavoritePokemon } from '@/domain/use-cases/pokemon'
+import { type DeletePokemon, type AddPokemon, type GetListFavoritePokemon } from '@/domain/use-cases/pokemon'
 
 import React, { useCallback, useState, useRef, useContext, useEffect } from 'react'
 import { ScrollView, type NativeScrollEvent } from 'react-native'
@@ -15,9 +15,10 @@ type Props = {
   getDataPokemon: GetDataPokemon
   getListFavoritePokemon: GetListFavoritePokemon
   addPokemon: AddPokemon
+  deletePokemon: DeletePokemon
 }
 
-export const Home: React.FC<Props> = ({ listPokemons, getDataPokemon, getListFavoritePokemon, addPokemon }) => {
+export const Home: React.FC<Props> = ({ listPokemons, getDataPokemon, getListFavoritePokemon, addPokemon, deletePokemon }) => {
   const { getCurrentAccount } = useContext(AccountContext)
   const scrollRef = useRef<ScrollView>(null)
   const [listPokemon, setListPokemon] = useState<ApiPokemon[]>([])
@@ -85,8 +86,16 @@ export const Home: React.FC<Props> = ({ listPokemons, getDataPokemon, getListFav
     } catch (error) { }
   }
 
+  const handlerDeletePokemon = async (pokemon: ApiPokemon): Promise<void> => {
+    try {
+      await deletePokemon({ idPokemon: pokemon.id.toString() })
+      const favoritePokemon = listFavoritePokemon.filter(pokemonFavorite => pokemonFavorite.idPokemon !== pokemon.id.toString())
+      setListFavoritePokemon(favoritePokemon)
+    } catch (error) {}
+  }
+
   return (
-  <PokemonProvider listFavoritePokemon={listFavoritePokemon} addPokemon={handlerAddPokemon}>
+  <PokemonProvider listFavoritePokemon={listFavoritePokemon} addPokemon={handlerAddPokemon} deletePokemon={handlerDeletePokemon}>
     <ScrollView
     testID='scroll-home'
     contentContainerStyle={{ flexGrow: 1 }}
