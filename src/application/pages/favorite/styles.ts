@@ -22,3 +22,8 @@ export const ListPokemon = styled.View`
   margin-top: 90px;
   gap: 90px;
 `
+
+export const Text = styled.Text`
+  font-family: ${theme.FONT.ROBONTO[700]};
+  font-size: 18px;
+`

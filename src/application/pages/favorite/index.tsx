@@ -1,4 +1,4 @@
-import { Container, Main, ListPokemon } from './styles'
+import { Container, Main, ListPokemon, Text } from './styles'
 import { PokemonCardAnimation, Footer } from '@/application/components'
 import { type DeletePokemon, type GetListFavoritePokemon } from '@/domain/use-cases/pokemon'
 import { type GetDataPokemon } from '@/domain/use-cases/api-pokemon'
@@ -63,7 +63,7 @@ export const Favorite: React.FC<Props> = ({ getListFavoritePokemon, getDataPokem
           <ListPokemon>
           { listPokemon.length > 0
             ? listPokemon.map(pokemon => (<PokemonCardAnimation pokemon={pokemon} key={pokemon.id}/>))
-            : <p className='favorite-text'>Você não tem pokemons favoritado.</p>
+            : <Text>Você não tem pokemons favoritado.</Text>
           }
           </ListPokemon>
         </Main>
