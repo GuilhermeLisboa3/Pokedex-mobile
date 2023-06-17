@@ -2,7 +2,7 @@ import { Favorite } from '@/application/pages/favorite'
 import { ApiPokemonParams } from '@/tests/mocks'
 
 import React from 'react'
-import { render, screen, waitFor } from '@testing-library/react-native'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react-native'
 import { AccountContext, PokemonProvider } from '@/application/contexts'
 import { NavigationContext } from '@react-navigation/native'
 
@@ -19,13 +19,14 @@ const navContext = {
 describe('Favorite', () => {
   const getListFavoritePokemon = jest.fn()
   const getDataPokemon = jest.fn()
+  const deletePokemon = jest.fn()
 
   const makeSut = (): void => {
     render(
       <NavigationContext.Provider value={navContext}>
         <AccountContext.Provider value={{ setCurrentAccount: jest.fn(), getCurrentAccount: jest.fn() }}>
           <PokemonProvider listFavoritePokemon={[{ idPokemon: '1' }]} addPokemon={jest.fn()} deletePokemon={jest.fn()}>
-            <Favorite getListFavoritePokemon={getListFavoritePokemon} getDataPokemon={getDataPokemon}/>
+            <Favorite getListFavoritePokemon={getListFavoritePokemon} getDataPokemon={getDataPokemon} deletePokemon={deletePokemon}/>
           </PokemonProvider>
         </AccountContext.Provider>
       </NavigationContext.Provider>
@@ -57,5 +58,15 @@ describe('Favorite', () => {
     await waitFor(() => screen.getByTestId('card-pokemon'))
 
     expect(screen.getAllByTestId('card-pokemon')).toHaveLength(1)
+  })
+
+  it('should call DeletePokemon if click icon heart red', async () => {
+    makeSut()
+    await waitFor(() => screen.getByTestId('card-pokemon'))
+    fireEvent.press(screen.getByTestId('bg-icon-heart'))
+
+    expect(deletePokemon).toHaveBeenCalledWith({ idPokemon: '1' })
+    expect(deletePokemon).toHaveBeenCalledTimes(1)
+    await waitFor(() => screen.getAllByTestId('card-pokemon'))
   })
 })
