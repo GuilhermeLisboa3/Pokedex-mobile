@@ -41,4 +41,10 @@ describe('DeletePokemonUseCase', () => {
 
     await expect(promise).rejects.toThrow(new UnexpectedError())
   })
+
+  it('should delete an pokemon if HttpClient return 204', async () => {
+    const result = await sut(PokemonParams)
+
+    expect(result).toBeUndefined()
+  })
 })
