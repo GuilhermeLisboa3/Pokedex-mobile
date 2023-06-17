@@ -69,4 +69,11 @@ describe('Favorite', () => {
     expect(deletePokemon).toHaveBeenCalledTimes(1)
     await waitFor(() => screen.getAllByTestId('card-pokemon'))
   })
+
+  it('should show text if GetListFavoritePokemon return array empty', async () => {
+    getListFavoritePokemon.mockResolvedValueOnce([])
+    makeSut()
+
+    expect(await screen.findByText('Você não tem pokemons favoritado.')).toBeTruthy()
+  })
 })
