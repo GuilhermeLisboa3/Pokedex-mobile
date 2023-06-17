@@ -1,5 +1,5 @@
 import { type HttpClient } from '@/domain/contracts/http'
-import { AccessDeniedError } from '@/domain/errors'
+import { AccessDeniedError, UnexpectedError } from '@/domain/errors'
 
 type Setup = (url: string, httpClient: HttpClient<boolean>) => DeletePokemon
 type Input = { idPokemon: string }
@@ -10,5 +10,6 @@ export const DeletePokemonUseCase: Setup = (url, httpClient) => async ({ idPokem
   switch (statusCode) {
     case 204: break
     case 403: throw new AccessDeniedError()
+    default: throw new UnexpectedError()
   }
 }
