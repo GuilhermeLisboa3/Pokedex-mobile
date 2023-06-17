@@ -5,6 +5,7 @@ import React from 'react'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react-native'
 import { AccountContext, PokemonProvider } from '@/application/contexts'
 import { NavigationContext } from '@react-navigation/native'
+import { AccessDeniedError } from '@/domain/errors'
 
 const actualNav = jest.requireActual('@react-navigation/native')
 const navContext = {
@@ -75,5 +76,12 @@ describe('Favorite', () => {
     makeSut()
 
     expect(await screen.findByText('Você não tem pokemons favoritado.')).toBeTruthy()
+  })
+
+  it('should show empty content if GetListFavoritePokemon returns AccessDeniedError', async () => {
+    getListFavoritePokemon.mockRejectedValueOnce(new AccessDeniedError())
+    makeSut()
+    await waitFor(() => screen.getByText('Tentar novamente'))
+    expect(screen.getByText('Tentar novamente')).toBeTruthy()
   })
 })
