@@ -93,4 +93,18 @@ describe('DataPokemon', () => {
     fireEvent.press(screen.getByTestId('icon-heart'))
     expect(addPokemon).toHaveBeenCalledWith(ApiPokemonParams)
   })
+
+  it('should call deletePokemon if click red heart', () => {
+    const deletePokemon = jest.fn()
+    render(
+      <PokemonProvider listFavoritePokemon={[{ idPokemon: ApiPokemonParams.id }]} addPokemon={jest.fn()} deletePokemon={deletePokemon}>
+        <CardAnimationContext.Provider value={{ cardPokemonOpen: jest.fn(), changeCardSize: jest.fn(), dataPokemonOpen: jest.fn() }}>
+          <DataPokemon pokemon={ApiPokemonParams}/>
+        </CardAnimationContext.Provider>
+      </PokemonProvider>
+    )
+
+    fireEvent.press(screen.getByTestId('bg-icon-heart'))
+    expect(deletePokemon).toHaveBeenCalledWith(ApiPokemonParams)
+  })
 })
