@@ -37,6 +37,7 @@ describe('CardPokemon', () => {
     const cardPokemonOpen = jest.fn()
     const changeCardSize = jest.fn()
     const dataPokemonOpen = jest.fn()
+    const addPokemon = jest.fn()
     render(
     <PokemonProvider listFavoritePokemon={[]}>
       <CardAnimationContext.Provider value={{ cardPokemonOpen, changeCardSize, dataPokemonOpen }}>
@@ -49,5 +50,7 @@ describe('CardPokemon', () => {
     expect(cardPokemonOpen).toHaveBeenCalledWith(false)
     expect(dataPokemonOpen).toHaveBeenCalledWith(true)
     expect(changeCardSize).toHaveBeenCalledWith(380, 800)
+    fireEvent.press(screen.getByTestId('icon-heart'))
+    expect(addPokemon).not.toHaveBeenCalledWith(ApiPokemonParams)
   })
 })
