@@ -1,27 +1,37 @@
 import { Container, Main, ListPokemon } from './styles'
 import { PokemonCardAnimation, Footer } from '@/application/components'
-import { type GetListFavoritePokemon } from '@/domain/use-cases/pokemon'
+import { type DeletePokemon, type GetListFavoritePokemon } from '@/domain/use-cases/pokemon'
 import { type GetDataPokemon } from '@/domain/use-cases/api-pokemon'
 import { type ApiPokemon, type Pokemon } from '@/domain/models'
 
 import React, { useCallback, useState } from 'react'
 import { ScrollView } from 'react-native'
 import { useFocusEffect } from '@react-navigation/native'
+import { PokemonProvider } from '@/application/contexts'
 
 type Props = {
   getListFavoritePokemon: GetListFavoritePokemon
   getDataPokemon: GetDataPokemon
+  deletePokemon: DeletePokemon
 }
 
-export const Favorite: React.FC<Props> = ({ getListFavoritePokemon, getDataPokemon }) => {
-  const [, setListFavoritePokemon] = useState<Pokemon[]>([])
+export const Favorite: React.FC<Props> = ({ getListFavoritePokemon, getDataPokemon, deletePokemon }) => {
+  const [listFavoritePokemon, setListFavoritePokemon] = useState<Pokemon[]>([])
   const [listPokemon, setListPokemon] = useState<ApiPokemon[]>([])
+
+  const [reload, setReload] = useState(false)
+  const [, setError] = useState<string | undefined>(undefined)
+
+  const changeReload = (): void => {
+    setError(undefined)
+    setReload(!reload)
+  }
 
   useFocusEffect(useCallback(() => {
     getListFavoritePokemon().then(result => {
       listPokemonHandler(result)
     })
-  }, []))
+  }, [reload]))
 
   const listPokemonHandler = async (favoritePokemon: Pokemon[]): Promise<void> => {
     const listPokemon = favoritePokemon.map(async (pokemon) => {
@@ -33,8 +43,17 @@ export const Favorite: React.FC<Props> = ({ getListFavoritePokemon, getDataPokem
     setListFavoritePokemon(favoritePokemon)
   }
 
+  const handlerDeletePokemon = async (pokemon: ApiPokemon): Promise<void> => {
+    try {
+      await deletePokemon({ idPokemon: pokemon.id.toString() })
+      const favoritePokemon = listFavoritePokemon.filter(pokemonFavorite => pokemonFavorite.idPokemon !== pokemon.id.toString())
+      setListFavoritePokemon(favoritePokemon)
+      changeReload()
+    } catch (error) {}
+  }
+
   return (
-    <>
+    <PokemonProvider deletePokemon={handlerDeletePokemon} listFavoritePokemon={listFavoritePokemon}>
     <ScrollView
     testID='scroll-home'
     contentContainerStyle={{ flexGrow: 1 }}
@@ -51,6 +70,6 @@ export const Favorite: React.FC<Props> = ({ getListFavoritePokemon, getDataPokem
         <Footer/>
       </Container>
     </ScrollView>
-    </>
+    </PokemonProvider>
   )
 }
