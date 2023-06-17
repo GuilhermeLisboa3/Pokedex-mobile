@@ -1,5 +1,5 @@
 import { Container, Main, ListPokemon, Text } from './styles'
-import { PokemonCardAnimation, Footer } from '@/application/components'
+import { PokemonCardAnimation, Footer, Error } from '@/application/components'
 import { type DeletePokemon, type GetListFavoritePokemon } from '@/domain/use-cases/pokemon'
 import { type GetDataPokemon } from '@/domain/use-cases/api-pokemon'
 import { type ApiPokemon, type Pokemon } from '@/domain/models'
@@ -20,7 +20,7 @@ export const Favorite: React.FC<Props> = ({ getListFavoritePokemon, getDataPokem
   const [listPokemon, setListPokemon] = useState<ApiPokemon[]>([])
 
   const [reload, setReload] = useState(false)
-  const [, setError] = useState<string | undefined>(undefined)
+  const [error, setError] = useState<string | undefined>(undefined)
 
   const changeReload = (): void => {
     setError(undefined)
@@ -30,7 +30,7 @@ export const Favorite: React.FC<Props> = ({ getListFavoritePokemon, getDataPokem
   useFocusEffect(useCallback(() => {
     getListFavoritePokemon().then(result => {
       listPokemonHandler(result)
-    })
+    }).catch(error => setError(error.message))
   }, [reload]))
 
   const listPokemonHandler = async (favoritePokemon: Pokemon[]): Promise<void> => {
@@ -60,12 +60,15 @@ export const Favorite: React.FC<Props> = ({ getListFavoritePokemon, getDataPokem
     >
       <Container>
         <Main>
-          <ListPokemon>
-          { listPokemon.length > 0
-            ? listPokemon.map(pokemon => (<PokemonCardAnimation pokemon={pokemon} key={pokemon.id}/>))
-            : <Text>Você não tem pokemons favoritado.</Text>
+          { error
+            ? <Error error={error} reload={changeReload}/>
+            : <ListPokemon>
+              { listPokemon.length > 0
+                ? listPokemon.map(pokemon => (<PokemonCardAnimation pokemon={pokemon} key={pokemon.id}/>))
+                : <Text>Você não tem pokemons favoritado.</Text>
+              }
+            </ListPokemon>
           }
-          </ListPokemon>
         </Main>
         <Footer/>
       </Container>
