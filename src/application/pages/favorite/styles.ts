@@ -14,6 +14,12 @@ export const Main = styled.View`
   flex-grow: 1;
 `
 
+export const Image = styled.Image`
+  margin: 40px auto 0px;
+  width: 300px;
+  height: 55px;
+`
+
 export const ListPokemon = styled.View`
   flex-direction: row;
   justify-content: center;

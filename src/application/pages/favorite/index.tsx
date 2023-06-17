@@ -1,13 +1,16 @@
-import { Container, Main, ListPokemon, Text } from './styles'
+import { Container, Main, ListPokemon, Text, Image } from './styles'
 import { PokemonCardAnimation, Footer, Error } from '@/application/components'
 import { type DeletePokemon, type GetListFavoritePokemon } from '@/domain/use-cases/pokemon'
 import { type GetDataPokemon } from '@/domain/use-cases/api-pokemon'
 import { type ApiPokemon, type Pokemon } from '@/domain/models'
+import logo from '@/application/assets/pokedexLogo.png'
 
 import React, { useCallback, useState } from 'react'
-import { ScrollView } from 'react-native'
+import { ScrollView, Pressable } from 'react-native'
 import { useFocusEffect } from '@react-navigation/native'
 import { PokemonProvider } from '@/application/contexts'
+import { useNavigation, type ParamListBase } from '@react-navigation/native'
+import { type StackNavigationProp } from '@react-navigation/stack'
 
 type Props = {
   getListFavoritePokemon: GetListFavoritePokemon
@@ -16,6 +19,7 @@ type Props = {
 }
 
 export const Favorite: React.FC<Props> = ({ getListFavoritePokemon, getDataPokemon, deletePokemon }) => {
+  const { navigate } = useNavigation<StackNavigationProp <ParamListBase>>()
   const [listFavoritePokemon, setListFavoritePokemon] = useState<Pokemon[]>([])
   const [listPokemon, setListPokemon] = useState<ApiPokemon[]>([])
 
@@ -60,6 +64,9 @@ export const Favorite: React.FC<Props> = ({ getListFavoritePokemon, getDataPokem
     >
       <Container>
         <Main>
+          <Pressable onPress={() => { navigate('Home') }}>
+            <Image source={logo}/>
+          </Pressable>
           { error
             ? <Error error={error} reload={changeReload}/>
             : <ListPokemon>
