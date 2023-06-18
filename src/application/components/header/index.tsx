@@ -19,7 +19,7 @@ export const Header: React.FC<Props> = ({ setNamePokemon }) => {
   const handlerChange = (name: string): void => {
     setTimeout(() => {
       setNamePokemon(name.toLocaleLowerCase())
-    }, 1000 * 1)
+    }, 1200 * 1)
   }
 
   return (
