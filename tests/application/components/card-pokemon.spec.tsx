@@ -39,7 +39,7 @@ describe('CardPokemon', () => {
     const dataPokemonOpen = jest.fn()
     const addPokemon = jest.fn()
     render(
-    <PokemonProvider listFavoritePokemon={[]} deletePokemon={jest.fn()} addPokemon={jest.fn()}>
+    <PokemonProvider listFavoritePokemon={[]} deletePokemon={jest.fn()}>
       <CardAnimationContext.Provider value={{ cardPokemonOpen, changeCardSize, dataPokemonOpen }}>
         <CardPokemon pokemon={{ ...ApiPokemonParams, types: [{ type: { name: 'fire' } }, { type: { name: 'water' } }] }}/>
       </CardAnimationContext.Provider>
@@ -50,6 +50,20 @@ describe('CardPokemon', () => {
     expect(cardPokemonOpen).toHaveBeenCalledWith(false)
     expect(dataPokemonOpen).toHaveBeenCalledWith(true)
     expect(changeCardSize).toHaveBeenCalledWith(380, 800)
+    fireEvent.press(screen.getByTestId('icon-heart'))
+    expect(addPokemon).not.toHaveBeenCalledWith(ApiPokemonParams)
+  })
+
+  it('should call addPokemon if click icon-heart', () => {
+    const addPokemon = jest.fn()
+    render(
+    <PokemonProvider listFavoritePokemon={[]} deletePokemon={jest.fn()} addPokemon={addPokemon}>
+      <CardAnimationContext.Provider value={{ cardPokemonOpen: jest.fn(), changeCardSize: jest.fn(), dataPokemonOpen: jest.fn() }}>
+        <CardPokemon pokemon={{ ...ApiPokemonParams, types: [{ type: { name: 'fire' } }, { type: { name: 'water' } }] }}/>
+      </CardAnimationContext.Provider>
+    </PokemonProvider>
+    )
+
     fireEvent.press(screen.getByTestId('icon-heart'))
     expect(addPokemon).not.toHaveBeenCalledWith(ApiPokemonParams)
   })

@@ -1,11 +1,11 @@
 import { Favorite } from '@/application/pages/favorite'
 import { ApiPokemonParams } from '@/tests/mocks'
+import { AccessDeniedError } from '@/domain/errors'
 
 import React from 'react'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react-native'
 import { AccountContext, PokemonProvider } from '@/application/contexts'
 import { NavigationContext } from '@react-navigation/native'
-import { AccessDeniedError } from '@/domain/errors'
 
 const actualNav = jest.requireActual('@react-navigation/native')
 const navContext = {

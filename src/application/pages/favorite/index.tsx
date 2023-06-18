@@ -64,7 +64,7 @@ export const Favorite: React.FC<Props> = ({ getListFavoritePokemon, getDataPokem
     >
       <Container>
         <Main>
-          <Pressable onPress={() => { navigate('Home') }}>
+          <Pressable onPress={() => { navigate('Home') }} testID='logo'>
             <Image source={logo}/>
           </Pressable>
           { error

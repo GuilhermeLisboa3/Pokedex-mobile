@@ -65,7 +65,7 @@ describe('DataPokemon', () => {
     const dataPokemonOpen = jest.fn()
     const addPokemon = jest.fn()
     render(
-      <PokemonProvider listFavoritePokemon={[]} deletePokemon={jest.fn()} addPokemon={jest.fn()}>
+      <PokemonProvider listFavoritePokemon={[]} deletePokemon={jest.fn()}>
         <CardAnimationContext.Provider value={{ cardPokemonOpen, changeCardSize, dataPokemonOpen }}>
           <DataPokemon pokemon={ApiPokemonParams}/>
         </CardAnimationContext.Provider>
