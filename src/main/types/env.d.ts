@@ -1,3 +1,3 @@
 declare module '@env' {
-  export const API_URL_POKEMON: string
+  export const API_POKEMON: string
 }
